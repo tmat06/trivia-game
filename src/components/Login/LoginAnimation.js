@@ -3,13 +3,13 @@ import "./LoginAnimation.css";
 import { Motion, spring } from "react-motion";
 import JoinRoom from "./JoinRoom/JoinRoom";
 import CreateRoom from "./CreateRoom/CreateRoom";
-import { createECDH } from "crypto";
 
 export default class LoginAnimation extends Component {
   constructor() {
     super();
     this.state = {
-      focusTrigger: false
+      focusTrigger: false,
+      wing: true
     };
     this.roomChange = this.roomChange.bind(this);
     this.triggerAnimation = this.triggerAnimation.bind(this);
@@ -29,6 +29,7 @@ export default class LoginAnimation extends Component {
   }
 
   render() {
+    // This function will determine which form to render
     let currentRoom = () => {
       switch (this.state.room) {
         case "create-room":
@@ -53,13 +54,19 @@ export default class LoginAnimation extends Component {
           );
       }
     };
-
+    console.log("input", this.state.focusTrigger);
     return (
       <Motion
-        defaultStyle={{ x: 200, opacity: 0 }}
+        defaultStyle={{ x: 200, opacity: 0, wings: 0, head: 0 }}
         style={{
           x: spring(50, { stiffness: 60, damping: 15 }),
-          opacity: spring(1)
+          opacity: spring(1),
+          wings: this.state.wing
+            ? spring(30, { stiffness: 60, damping: 30 })
+            : spring(10, { stiffness: 60, damping: 30 }),
+          head: this.state.wing
+            ? spring(20, { stiffness: 60, damping: 15 })
+            : spring(0, { stiffness: 60, damping: 30 })
         }}
       >
         {mot => {
@@ -69,35 +76,51 @@ export default class LoginAnimation extends Component {
                 <div
                   id="animation-full-body"
                   style={{
-                    transform: `translateY(${mot.x}px)`
+                    transform: `translate(0px, ${mot.x}px)`
                   }}
+                  onClick={() => this.setState({ wing: !this.state.wing })}
                 >
-                  <div id="animation-head">
+                  <div
+                    id="animation-head"
+                    style={{ transform: `translate(0px, ${mot.head}px)` }}
+                  >
                     <div id="animation-eye-row">
                       <div className="animation-eye">
-                        <div className="animation-pupil">pupil </div>
+                        <div className="animation-pupil"> </div>
                       </div>
                       <div className="animation-eye">
-                        <div className="animation-pupil">pupil </div>
+                        <div className="animation-pupil" />
                       </div>
                     </div>
-                    <div id="animation-beak">Beak</div>
+                    <div id="animation-beak">
+                      <div
+                        id="animation-mouth"
+                        style={{
+                          height: "5px",
+                          width: "80%",
+                          marginBottom: "10px"
+                        }}
+                      />
+                    </div>
                   </div>
                   <div id="animation-body-core">
                     <div
+                      className="animation-wing"
                       style={{
-                        height: "250px",
-                        width: "30%",
-                        borderRadius: "30px",
-                        transform: `rotate(200deg)`,
-                        backgroundColor: "blue",
-                        transform: `translateY(${mot.x}px)`
+                        transform: `rotate(-${mot.wings}deg)`,
+                        marginRight: "-50px",
+                        boxShadow: "-.5px 0px 1px black"
                       }}
-                    >
-                      wing
-                    </div>
+                    />
                     <div id="animation-body-torso">body</div>
-                    <div>wing</div>
+                    <div
+                      className="animation-wing"
+                      style={{
+                        transform: `rotate(${mot.wings}deg)`,
+                        marginLeft: "-50px",
+                        boxShadow: "1px 0px 1px black"
+                      }}
+                    />
                   </div>
                 </div>
               </div>

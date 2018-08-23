@@ -56,25 +56,49 @@ export default class LoginAnimation extends Component {
 
     return (
       <Motion
-        defaultStyle={{ x: 20, opacity: 0 }}
-        style={{ x: spring(0), opacity: spring(1) }}
+        defaultStyle={{ x: 200, opacity: 0 }}
+        style={{
+          x: spring(50, { stiffness: 60, damping: 15 }),
+          opacity: spring(1)
+        }}
       >
         {mot => {
           return (
             <div className="container">
               <div id="animation-frame">
-                <div>
-                  <div
-                    style={{
-                      height: "175px",
-                      width: "175px",
-                      backgroundColor: "darkgrey",
-                      borderRadius: "15px"
-                    }}
-                  >
-                    Head
+                <div
+                  id="animation-full-body"
+                  style={{
+                    transform: `translateY(${mot.x}px)`
+                  }}
+                >
+                  <div id="animation-head">
+                    <div id="animation-eye-row">
+                      <div className="animation-eye">
+                        <div className="animation-pupil">pupil </div>
+                      </div>
+                      <div className="animation-eye">
+                        <div className="animation-pupil">pupil </div>
+                      </div>
+                    </div>
+                    <div id="animation-beak">Beak</div>
                   </div>
-                  <div>Body</div>
+                  <div id="animation-body-core">
+                    <div
+                      style={{
+                        height: "250px",
+                        width: "30%",
+                        borderRadius: "30px",
+                        transform: `rotate(200deg)`,
+                        backgroundColor: "blue",
+                        transform: `translateY(${mot.x}px)`
+                      }}
+                    >
+                      wing
+                    </div>
+                    <div id="animation-body-torso">body</div>
+                    <div>wing</div>
+                  </div>
                 </div>
               </div>
               <div style={{ height: "25%" }}>{currentRoom()}</div>

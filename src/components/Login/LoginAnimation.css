@@ -52,8 +52,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-shadow: 3px 3px 3px black;
   z-index: 2;
+  box-shadow: 1px 1px 1px black;
 }
 
 #animation-eye-row {

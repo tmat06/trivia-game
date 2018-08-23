@@ -8,7 +8,7 @@
   justify-content: center;
   position: relative;
 }
-
+/* will need to adjust animation frame depending on different sizes */
 .animation-frame {
   height: 300px;
   width: 300px;

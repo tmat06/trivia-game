@@ -3,31 +3,61 @@ import "./LoginAnimation.css";
 import { Motion, spring } from "react-motion";
 import JoinRoom from "./JoinRoom/JoinRoom";
 import CreateRoom from "./CreateRoom/CreateRoom";
+import io from "socket.io-client";
+import { joinRoom } from "./../../ducks/reducer";
+import { connect } from "react-redux";
 
-export default class LoginAnimation extends Component {
+const socket = io.connect("http://localhost:3006");
+
+class LoginAnimation extends Component {
   constructor() {
     super();
     this.state = {
       focusTrigger: false,
+      roomTrigger: false,
+      createRoomTrigger: false,
       wing: true,
-      name: ""
+      name: "",
+      room: "",
+      roomCreation: ""
     };
     this.roomChange = this.roomChange.bind(this);
     this.triggerAnimation = this.triggerAnimation.bind(this);
     this.animateInput = this.animateInput.bind(this);
+    this.updateState = this.updateState.bind(this);
+    this.hostRoomClick = this.hostRoomClick.bind(this);
+    this.joinRoomClick = this.joinRoomClick.bind(this);
   }
 
-  triggerAnimation() {
-    this.setState({ focusTrigger: !this.state.focusTrigger });
+  //callback functions
+  triggerAnimation(state) {
+    this.setState({ [state]: !this.state[state] });
   }
 
-  animateInput() {
-    this.triggerAnimation();
+  animateInput(state) {
+    this.setState({ [state]: !this.state[state] });
   }
 
   roomChange(room) {
     this.setState({ room });
   }
+
+  updateState(val, stateKey) {
+    if (val.length < 20) this.setState({ [stateKey]: val });
+  }
+
+  hostRoomClick() {
+    //Stores room name on Redux and joins on server side
+    this.props.joinRoom(this.state.roomCreation);
+    socket.emit("create-room", { room: this.state.roomCreation });
+    this.props.history.push("/WaitingLobby");
+  }
+
+  joinRoomClick() {
+    console.log("hitters");
+  }
+
+  //////////////////////////////////
 
   // Implement a tap on duck animation
 
@@ -37,6 +67,7 @@ export default class LoginAnimation extends Component {
       this.setState({ wing: !this.state.wing });
     }, 200);
   }
+
   render() {
     // This function will determine which form to render
     let currentRoom = () => {
@@ -47,8 +78,11 @@ export default class LoginAnimation extends Component {
               fn={{
                 roomChange: this.roomChange,
                 triggerAnimation: this.triggerAnimation,
-                animateInput: this.animateInput
+                animateInput: this.animateInput,
+                updateState: this.updateState,
+                hostRoomClick: this.hostRoomClick
               }}
+              room={this.state.roomCreation}
             />
           );
         default:
@@ -57,12 +91,17 @@ export default class LoginAnimation extends Component {
               fn={{
                 roomChange: this.roomChange,
                 triggerAnimation: this.triggerAnimation,
-                animateInput: this.animateInput
+                animateInput: this.animateInput,
+                updateState: this.updateState,
+                joinRoomClick: this.joinRoomClick
               }}
+              name={this.state.name}
+              room={this.state.room}
             />
           );
       }
     };
+
     return (
       <Motion
         defaultStyle={{
@@ -74,33 +113,72 @@ export default class LoginAnimation extends Component {
           bodyInput: 0,
           beakInput: 0,
           eyeRowInput: 0,
-          mouthInput: 90
+          mouthInput: 90,
+          eyeRow: 20
         }}
         style={{
-          x: spring(50, { stiffness: 60, damping: 15 }),
+          x: this.state.roomTrigger
+            ? spring(180, { stiffness: 60, damping: 15 })
+            : this.state.createRoomTrigger
+              ? spring(120, { stiffness: 60, damping: 15 })
+              : spring(50, { stiffness: 60, damping: 15 }),
+          eyeRow: this.state.roomTrigger
+            ? spring(20, { stiffness: 60, damping: 15 })
+            : spring(20, { stiffness: 60, damping: 15 }),
           opacity: spring(1),
           wings: this.state.wing
-            ? spring(30, { stiffness: 60, damping: 30 })
+            ? spring(30, { stiffness: 60, damping: 7 })
             : spring(10, { stiffness: 60, damping: 30 }),
-          //causing too many issues with the input motion and tap on the head motion
-
-          // head: this.state.wing
-          //   ? spring(0, { stiffness: 90, damping: 9 })
-          //   : spring(10, { stiffness: 60, damping: 9 }),
-
           input: this.state.focusTrigger
-            ? spring(20, { stiffness: 90, damping: 30 })
-            : spring(0, { stiffness: 60, damping: 30 }),
+            ? spring(20 - this.state.name.length, {
+                stiffness: 90,
+                damping: 30
+              })
+            : this.state.roomTrigger
+              ? spring(0)
+              : spring(0 - this.state.name.length, {
+                  stiffness: 60,
+                  damping: 30
+                }),
+          head: this.state.focusTrigger
+            ? spring(20, {
+                stiffness: 90,
+                damping: 30
+              })
+            : this.state.roomTrigger
+              ? spring(0, { stiffness: 90, damping: 15 })
+              : spring(0, {
+                  stiffness: 60,
+                  damping: 30
+                }),
           bodyInput: this.state.focusTrigger ? spring(20) : spring(0),
           beakInput: this.state.focusTrigger
-            ? spring(20, { stiffness: 60, damping: 15 })
-            : spring(0, { stiffness: 60, damping: 15 }),
+            ? spring(-20 + this.state.name.length * 2, {
+                stiffness: 60,
+                damping: 15
+              })
+            : spring(0, {
+                stiffness: 60,
+                damping: 15
+              }),
           eyeRowInput: this.state.focusTrigger
-            ? spring(10, { stiffness: 60, damping: 15 })
-            : spring(0, { stiffness: 60, damping: 15 }),
+            ? spring(-20 + this.state.name.length * 2, {
+                stiffness: 60,
+                damping: 15
+              })
+            : spring(0, {
+                stiffness: 60,
+                damping: 15
+              }),
           mouthInput: this.state.focusTrigger
-            ? spring(30, { stiffness: 60, damping: 15 })
-            : spring(90, { stiffness: 60, damping: 15 })
+            ? spring(10 + this.state.name.length, {
+                stiffness: 60,
+                damping: 15
+              })
+            : spring(50 + this.state.name.length, {
+                stiffness: 60,
+                damping: 15
+              })
         }}
       >
         {mot => {
@@ -117,18 +195,14 @@ export default class LoginAnimation extends Component {
                   <div
                     id="animation-head"
                     style={{
-                      transform: this.state.focusTrigger
-                        ? `translate(-${mot.input}px, ${mot.input}px)`
-                        : `translate(-${mot.input}px, ${mot.input}px)`
-
-                      // : `translate(0px, ${mot.head}px)`
+                      transform: `translate(-${mot.input}px, ${mot.head}px)`
                     }}
                   >
                     <div
                       id="animation-eye-row"
                       style={{
-                        transform: `translate(-${mot.eyeRowInput}px, ${
-                          mot.beakInput
+                        transform: `translate(${mot.eyeRowInput}px, ${
+                          mot.eyeRow
                         }px)`
                       }}
                     >
@@ -142,8 +216,8 @@ export default class LoginAnimation extends Component {
                     <div
                       id="animation-beak"
                       style={{
-                        transform: `translate(-${mot.beakInput}px, ${
-                          mot.beakInput
+                        transform: `translate(${mot.beakInput}px, ${
+                          mot.head
                         }px)`
                       }}
                     >
@@ -172,7 +246,7 @@ export default class LoginAnimation extends Component {
                         boxShadow: "-.5px 0px 1px black"
                       }}
                     />
-                    <div id="animation-body-torso">body</div>
+                    <div id="animation-body-torso" />
                     <div
                       className="animation-wing"
                       style={{
@@ -184,7 +258,10 @@ export default class LoginAnimation extends Component {
                   </div>
                 </div>
               </div>
-              <div style={{ height: "25%" }}>{currentRoom()}</div>
+              {/* Input Forms */}
+              <div style={{ height: "25%", marginBottom: "25px" }}>
+                {currentRoom()}
+              </div>
             </div>
           );
         }}
@@ -192,3 +269,12 @@ export default class LoginAnimation extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return state;
+}
+
+export default connect(
+  mapStateToProps,
+  { joinRoom }
+)(LoginAnimation);

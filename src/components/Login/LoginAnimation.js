@@ -49,12 +49,14 @@ class LoginAnimation extends Component {
   hostRoomClick() {
     //Stores room name on Redux and joins on server side
     this.props.joinRoom(this.state.roomCreation);
-    socket.emit("create-room", { room: this.state.roomCreation });
+    socket.emit("connect-room", { room: this.state.roomCreation });
     this.props.history.push("/WaitingLobby");
   }
 
   joinRoomClick() {
     console.log("hitters");
+    this.props.joinRoom(this.state.roomCreation);
+    socket.emit("join-room", { name: this.state.name, room: this.state.room });
   }
 
   //////////////////////////////////

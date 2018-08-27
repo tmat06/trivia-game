@@ -17,8 +17,10 @@ const io = socket(
 );
 
 io.on("connection", socket => {
-  console.log("connected");
-  socket.on("create-room", data => {
+  socket.on("connect-room", data => {
     socket.join(data.room);
+  });
+  socket.on("join-room", data => {
+    io.sockets.in(data.room).emit("player-joined", { name: data.name });
   });
 });

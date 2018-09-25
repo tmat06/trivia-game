@@ -2,12 +2,23 @@ import React from "react";
 import { connect } from "react-redux";
 import axios from "axios";
 import WaitingLobby from "./WaitingLobby";
+import Round1 from "./Round1";
 
 class HostView extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      currentRound: "waitingLobby",
+      questions: []
+    };
+  }
   componentDidMount() {
     window.addEventListener("beforeunload", this.deleteRoom);
   }
   componentWillUnmount() {
+    axios.delete(`/delete-room/${this.props.room}`).then(response => {
+      console.log("room deleted");
+    });
     window.removeEventListener("beforeunload", this.deleteRoom);
   }
 
@@ -19,8 +30,31 @@ class HostView extends React.Component {
     });
     e.returnValue = "unloading";
   };
+
+  moveRound = nextRound => {
+    if (nextRound === "round1") {
+      axios.get("/get-questions").then(response => {
+        this.setState({ questions: [...response.data.results] });
+      });
+      this.setState({ currentRound: nextRound });
+    }
+  };
+
+  roundChooser = () => {
+    switch (this.state.currentRound) {
+      case "waitingLobby":
+        return <WaitingLobby moveRound={this.moveRound} />;
+      case "round1":
+        return (
+          <Round1 moveRound={this.moveRound} questions={this.state.questions} />
+        );
+      default:
+        return <WaitingLobby moveRound={this.moveRound} />;
+    }
+  };
+
   render() {
-    return <WaitingLobby />;
+    return this.roundChooser();
   }
 }
 

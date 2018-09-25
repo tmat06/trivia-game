@@ -4,7 +4,7 @@ import { Motion, spring } from "react-motion";
 import JoinRoom from "./JoinRoom/JoinRoom";
 import CreateRoom from "./CreateRoom/CreateRoom";
 import io from "socket.io-client";
-import { joinRoom } from "./../../ducks/reducer";
+import { joinRoom, updateCharacter } from "./../../ducks/reducer";
 import { connect } from "react-redux";
 
 const socket = io.connect("http://localhost:3006");
@@ -27,6 +27,10 @@ class LoginAnimation extends Component {
     this.updateState = this.updateState.bind(this);
     this.hostRoomClick = this.hostRoomClick.bind(this);
     this.joinRoomClick = this.joinRoomClick.bind(this);
+  }
+
+  componentWillUnmount() {
+    socket.disconnect();
   }
 
   //callback functions
@@ -54,9 +58,18 @@ class LoginAnimation extends Component {
   }
 
   joinRoomClick() {
-    console.log("hitters");
-    this.props.joinRoom(this.state.roomCreation);
-    socket.emit("join-room", { name: this.state.name, room: this.state.room });
+    this.props.joinRoom(this.state.room);
+    //avatar for male can be 1 - 129 or female 1 - 114
+    let avatar = Math.floor(Math.random() * 129);
+    const character = {
+      name: this.state.name,
+      room: this.state.room,
+      avatar
+    };
+
+    socket.emit("join-room", character);
+    this.props.updateCharacter(character);
+    this.props.history.push("/WaitingView");
   }
 
   //////////////////////////////////
@@ -125,7 +138,7 @@ class LoginAnimation extends Component {
               ? spring(120, { stiffness: 60, damping: 15 })
               : spring(50, { stiffness: 60, damping: 15 }),
           eyeRow: this.state.roomTrigger
-            ? spring(20, { stiffness: 60, damping: 15 })
+            ? spring(5, { stiffness: 60, damping: 15 })
             : spring(20, { stiffness: 60, damping: 15 }),
           opacity: spring(1),
           wings: this.state.wing
@@ -148,7 +161,7 @@ class LoginAnimation extends Component {
                 damping: 30
               })
             : this.state.roomTrigger
-              ? spring(0, { stiffness: 90, damping: 15 })
+              ? spring(5, { stiffness: 90, damping: 15 })
               : spring(0, {
                   stiffness: 60,
                   damping: 30
@@ -159,28 +172,48 @@ class LoginAnimation extends Component {
                 stiffness: 60,
                 damping: 15
               })
-            : spring(0, {
-                stiffness: 60,
-                damping: 15
-              }),
+            : this.state.createRoomTrigger
+              ? spring(-15 + this.state.roomCreation.length * 2, {
+                  stiffness: 60,
+                  damping: 15
+                })
+              : spring(0, {
+                  stiffness: 60,
+                  damping: 15
+                }),
           eyeRowInput: this.state.focusTrigger
             ? spring(-20 + this.state.name.length * 2, {
                 stiffness: 60,
                 damping: 15
               })
-            : spring(0, {
-                stiffness: 60,
-                damping: 15
-              }),
+            : this.state.createRoomTrigger
+              ? spring(-10 + this.state.roomCreation.length * 2, {
+                  stiffness: 60,
+                  damping: 15
+                })
+              : this.state.roomTrigger
+                ? spring(-5 + this.state.room.length, {
+                    stiffness: 60,
+                    damping: 15
+                  })
+                : spring(0, {
+                    stiffness: 60,
+                    damping: 15
+                  }),
           mouthInput: this.state.focusTrigger
             ? spring(10 + this.state.name.length, {
                 stiffness: 60,
                 damping: 15
               })
-            : spring(50 + this.state.name.length, {
-                stiffness: 60,
-                damping: 15
-              })
+            : this.state.createRoomTrigger
+              ? spring(25 + this.state.roomCreation.length, {
+                  stiffness: 60,
+                  damping: 15
+                })
+              : spring(50 + this.state.name.length, {
+                  stiffness: 60,
+                  damping: 15
+                })
         }}
       >
         {mot => {
@@ -278,5 +311,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { joinRoom }
+  { joinRoom, updateCharacter }
 )(LoginAnimation);

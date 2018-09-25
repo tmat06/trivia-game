@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,500");
+@import url("https://fonts.googleapis.com/css?family=Press+Start+2P");
+@import url("https://fonts.googleapis.com/css?family=Rammetto+One");
 
 .App {
   text-align: center;
@@ -11,4 +13,26 @@
   width: 100%;
   background-color: lightgrey;
   font-family: "Roboto", sans-serif;
+}
+
+#waiting-room-name {
+  /* background: rgba(0, 0, 0, 0.3); */
+  border: none;
+  color: #333;
+  /* display: block; */
+  font-family: "Roboto", sans-serif;
+  font-size: 40px;
+  font-weight: 400;
+  letter-spacing: 5px;
+  margin: 2px;
+  outline: none;
+  padding: 15px 0 15px 12px;
+  text-shadow: 1.5px 1.5px 1.5px;
+  width: 300px;
+}
+/* selects all divs within the id */
+#waiting-room-name div {
+  font-family: "Rammetto One", cursive;
+  color: #556d75;
+  text-shadow: 1.5px 1.5px 1.5px #333;
 }

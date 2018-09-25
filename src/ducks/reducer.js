@@ -1,17 +1,17 @@
-import React from "react";
-import JoinRoom from "../components/Login/JoinRoom/JoinRoom";
-
 const initialState = {
-  room: ""
+  room: "",
+  character: {}
 };
 
 const JOIN_ROOM = "JOIN_ROOM";
+const UPDATE_CHARACTER = "UPDATE_CHARACTER";
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case JOIN_ROOM:
       return Object.assign({}, state, { room: action.payload });
-
+    case UPDATE_CHARACTER:
+      return Object.assign({}, state, { character: action.payload });
     default:
       return Object.assign({}, state);
   }
@@ -19,4 +19,8 @@ export default function reducer(state = initialState, action) {
 
 export function joinRoom(room) {
   return { type: JOIN_ROOM, payload: room };
+}
+
+export function updateCharacter(character) {
+  return { type: UPDATE_CHARACTER, payload: character };
 }

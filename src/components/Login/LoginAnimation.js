@@ -6,6 +6,7 @@ import CreateRoom from "./CreateRoom/CreateRoom";
 import io from "socket.io-client";
 import { joinRoom, updateCharacter } from "./../../ducks/reducer";
 import { connect } from "react-redux";
+import axios from "axios";
 
 const socket = io.connect("http://localhost:3006");
 
@@ -54,7 +55,15 @@ class LoginAnimation extends Component {
     //Stores room name on Redux and joins on server side
     this.props.joinRoom(this.state.roomCreation);
     socket.emit("connect-room", { room: this.state.roomCreation });
-    this.props.history.push("/WaitingLobby");
+    axios
+      .post("/create-room", { room: this.state.roomCreation })
+      .then(response => {
+        if (response.data === "Room Already Created") {
+          alert("room already created");
+        } else {
+          this.props.history.push("/HostView");
+        }
+      });
   }
 
   joinRoomClick() {

@@ -1,2 +1,3 @@
 select *
-from rooms;
+from rooms
+where room = $1;

@@ -3,16 +3,17 @@
 @import url("https://fonts.googleapis.com/css?family=Rammetto+One");
 
 .App {
-  text-align: center;
-  position: absolute;
+  align-items: space-around;
+  background-color: lightgrey;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: space-around;
-  height: 100vh;
-  width: 100%;
-  background-color: lightgrey;
   font-family: "Roboto", sans-serif;
+  height: 100vh;
+  justify-content: center;
+  overflow: auto;
+  position: absolute;
+  text-align: center;
+  width: 100%;
 }
 
 #waiting-lobby-container {
@@ -24,10 +25,8 @@
 }
 
 #waiting-lobby-name {
-  /* background: rgba(0, 0, 0, 0.3); */
   border: none;
   color: #333;
-  /* display: block; */
   font-family: "Roboto", sans-serif;
   font-size: 40px;
   font-weight: 400;
@@ -40,13 +39,32 @@
 }
 /* selects all divs within the id */
 #waiting-lobby-name div {
-  font-family: "Rammetto One", cursive;
   color: #556d75;
+  font-family: "Rammetto One", cursive;
   text-shadow: 1.5px 1.5px 1.5px #333;
 }
 
 #waiting-lobby-players {
+  align-items: center;
+  background-color: lightgrey;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   width: 100%;
-  overflow: scroll;
+}
+
+.waiting-lobby-player-name {
+  color: #333;
+  font-family: "Roboto", sans-serif;
+  font-size: 25px;
+  margin-bottom: 4px;
+  text-shadow: 1px 1px 1px #333;
+}
+
+#waiting-view-player {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }

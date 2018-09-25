@@ -3,10 +3,10 @@ import io from "socket.io-client";
 import { connect } from "react-redux";
 import toonavatar from "cartoon-avatar";
 import { Motion, spring } from "react-motion";
+import Button from "@material-ui/core/Button";
 
 const socket = io.connect(
   "http://localhost:3006/",
-
   {
     reconnection: true,
     reconnectionDelay: 1000,
@@ -64,6 +64,13 @@ class WaitingLobby extends React.Component {
                 <h1>Room Name:</h1>
                 <div>{this.props.room}</div>
               </div>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => this.props.moveRound("round1")}
+              >
+                Start Game
+              </Button>
               <div id="waiting-lobby-players">
                 {this.state.playerList.map((val, i) => {
                   let avatar = toonavatar.generate_avatar({
@@ -72,14 +79,18 @@ class WaitingLobby extends React.Component {
                   });
 
                   return (
-                    <div key={i}>
-                      {val.name}
+                    <div
+                      key={i}
+                      style={{ margin: 5, backgroundColor: "lightgrey" }}
+                    >
+                      <div className="waiting-lobby-player-name">
+                        {val.name}
+                      </div>
                       {val.avatar !== 170 ? (
                         <Motion
                           defaultStyle={{ op: 0, op2: 1 }}
                           style={{
-                            op: spring(1, { stiffness: 90, damping: 60 }),
-                            op2: spring(0, { stiffness: 90, damping: 60 })
+                            op: spring(1, { stiffness: 90, damping: 60 })
                           }}
                         >
                           {mot => {

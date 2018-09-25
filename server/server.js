@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const socket = require("socket.io");
 const massive = require("massive");
+const axios = require("axios");
 require("dotenv").config();
 
 const { SERVER_PORT, CONNECTION_PATH } = process.env;
@@ -25,7 +26,12 @@ app.post("/create-room", (req, res) => {
       });
     }
   });
-  // req.body.room;
+});
+
+app.get("/get-questions", (req, res) => {
+  axios.get(`https://opentdb.com/api.php?amount=10`).then(response => {
+    res.status(200).send(response.data);
+  });
 });
 
 app.delete("/delete-room/:room", (req, res) => {
@@ -49,10 +55,17 @@ io.on("connection", socket => {
 
   socket.on("join-room", data => {
     socket.join(data.room);
-
     io.sockets
       .in(data.room)
       .emit("joining-room", { name: data.name, avatar: data.avatar });
+  });
+
+  socket.on("timer-start", data => {
+    //get timer going here and send out to everyone
+  });
+
+  socket.on("recieve-questions", data => {
+    io.sockets.in(data.room).emit("questions", data.questions);
   });
 
   socket.on("disconnect", () => {

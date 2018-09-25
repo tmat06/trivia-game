@@ -19,18 +19,29 @@ class WaitingLobby extends React.Component {
   constructor() {
     super();
     this.state = {
-      playerList: [{ name: "Phil", avatar: 89 }, { name: "Sarah", avatar: 99 }]
+      playerList: [
+        { name: "Waiting...", avatar: 170 },
+        { name: "Waiting...", avatar: 170 },
+        { name: "Waiting...", avatar: 170 },
+        { name: "Waiting...", avatar: 170 },
+        { name: "Waiting...", avatar: 170 },
+        { name: "Waiting...", avatar: 170 },
+        { name: "Waiting...", avatar: 170 },
+        { name: "Waiting...", avatar: 170 }
+      ],
+      tracker: 0
     };
     socket.on("joining-room", player => {
       let tempPlayerList = [...this.state.playerList];
-      if (tempPlayerList.length < 8) tempPlayerList.push(player);
-      this.setState({ playerList: [...tempPlayerList] }, () => {
-        socket.emit("player-joined", {
-          avatar: player.avatar,
-          room: this.props.room,
-          name: player.name
+      if (this.state.tracker < 7) {
+        tempPlayerList[this.state.tracker] = player;
+        this.setState({
+          playerList: [...tempPlayerList],
+          tracker: ++this.state.tracker
         });
-      });
+      } else {
+        console.log("player ignored");
+      }
     });
   }
 
@@ -39,32 +50,72 @@ class WaitingLobby extends React.Component {
   }
 
   render() {
-    console.log("player list", this.state.playerList);
     return (
       <Motion
         defaultStyle={{ opacity: 0 }}
-        style={{ opacity: spring(1, { damping: 60, stiffness: 60 }) }}
+        style={{
+          opacity: spring(1, { damping: 60, stiffness: 60 })
+        }}
       >
         {mot => {
           return (
-            <div>
-              <div id="waiting-room-name" style={{ opacity: mot.opacity }}>
+            <div id="waiting-lobby-container">
+              <div id="waiting-lobby-name" style={{ opacity: mot.opacity }}>
                 <h1>Room Name:</h1>
                 <div>{this.props.room}</div>
               </div>
-              <div>players</div>
-              {this.state.playerList.map((val, i) => {
-                let avatar = toonavatar.generate_avatar({
-                  gender: "male",
-                  id: val.avatar
-                });
-                return (
-                  <div key={i}>
-                    {val.name}
-                    <img src={avatar} />
-                  </div>
-                );
-              })}
+              <div id="waiting-lobby-players">
+                {this.state.playerList.map((val, i) => {
+                  let avatar = toonavatar.generate_avatar({
+                    gender: "male",
+                    id: val.avatar
+                  });
+
+                  return (
+                    <div key={i}>
+                      {val.name}
+                      {val.avatar !== 170 ? (
+                        <Motion
+                          defaultStyle={{ op: 0, op2: 1 }}
+                          style={{
+                            op: spring(1, { stiffness: 90, damping: 60 }),
+                            op2: spring(0, { stiffness: 90, damping: 60 })
+                          }}
+                        >
+                          {mot => {
+                            return (
+                              <div
+                                style={{
+                                  height: 185,
+                                  width: 185,
+                                  backgroundColor: "#333",
+                                  opacity: mot.op
+                                }}
+                              >
+                                <img
+                                  src={avatar}
+                                  style={{
+                                    borderRadius: "100px",
+                                    opacity: mot.op - 0.01
+                                  }}
+                                />
+                              </div>
+                            );
+                          }}
+                        </Motion>
+                      ) : (
+                        <div
+                          style={{
+                            height: 185,
+                            width: 185,
+                            backgroundColor: "#333"
+                          }}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           );
         }}

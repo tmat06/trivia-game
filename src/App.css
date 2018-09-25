@@ -15,7 +15,15 @@
   font-family: "Roboto", sans-serif;
 }
 
-#waiting-room-name {
+#waiting-lobby-container {
+  align-items: center;
+  background-color: lightgrey;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+#waiting-lobby-name {
   /* background: rgba(0, 0, 0, 0.3); */
   border: none;
   color: #333;
@@ -31,8 +39,14 @@
   width: 300px;
 }
 /* selects all divs within the id */
-#waiting-room-name div {
+#waiting-lobby-name div {
   font-family: "Rammetto One", cursive;
   color: #556d75;
   text-shadow: 1.5px 1.5px 1.5px #333;
+}
+
+#waiting-lobby-players {
+  display: flex;
+  width: 100%;
+  overflow: scroll;
 }

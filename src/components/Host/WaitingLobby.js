@@ -49,6 +49,10 @@ class WaitingLobby extends React.Component {
     socket.emit("connect-room", { room: this.props.room });
   }
 
+  componentWillUnmount() {
+    socket.disconnect();
+  }
+
   render() {
     return (
       <Motion

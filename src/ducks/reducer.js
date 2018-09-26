@@ -30,5 +30,6 @@ export function updateCharacter(character) {
 }
 
 export function updateQuestions(questions) {
+  console.log("hitting reducer?", questions);
   return { type: UPDATE_QUESTIONS, payload: questions };
 }

@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import axios from "axios";
 import WaitingLobby from "./WaitingLobby";
 import Round1 from "./Round1";
+import Results from "./Results";
 
 class HostView extends React.Component {
   constructor() {
@@ -48,6 +49,8 @@ class HostView extends React.Component {
         return (
           <Round1 moveRound={this.moveRound} questions={this.state.questions} />
         );
+      case "results":
+        return <Results />;
       default:
         return <WaitingLobby moveRound={this.moveRound} />;
     }

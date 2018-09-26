@@ -61,11 +61,29 @@ io.on("connection", socket => {
   });
 
   socket.on("timer-start", data => {
-    //get timer going here and send out to everyone
+    //Closure Method used to not overlap on other current timers
+    timerCountdown(data.time, data.room);
   });
+
+  //Closure Method called on for Timer
+  function timerCountdown(time, room) {
+    let tempTime = time;
+    let timerCounter = setInterval(() => {
+      io.sockets.in(room).emit("timer-countdown", tempTime);
+      --tempTime;
+    }, 1000);
+    setTimeout(() => {
+      clearInterval(timerCounter);
+      io.sockets.in(room).emit("timer-finish", "finished");
+    }, 7000);
+  }
 
   socket.on("recieve-questions", data => {
     io.sockets.in(data.room).emit("questions", data.questions);
+  });
+
+  socket.on("update-tracker", data => {
+    io.sockets.in(data.room).emit("tracker-update", data.tracker);
   });
 
   socket.on("disconnect", () => {

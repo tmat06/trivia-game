@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import io from "socket.io-client";
+import { Motion, spring } from "react-motion";
 
 const socket = io.connect(
   "http://localhost:3006/",
@@ -17,12 +18,19 @@ class Round1Questions extends React.Component {
     super();
     this.state = {
       tracker: 0,
-      timer: 5
+      timer: 5,
+      flip: true,
+      flip2: false
     };
     socket.on("tracker-update", tracker => {
       tracker === -1
         ? this.props.history.push("/PlayerResults")
-        : this.setState({ tracker: tracker });
+        : this.setState({
+            tracker: tracker,
+            timer: 5,
+            flip: !this.state.flip,
+            flip2: !this.state.flip2
+          });
     });
     socket.on("timer-countdown", time => {
       this.setState({ timer: time });
@@ -35,10 +43,53 @@ class Round1Questions extends React.Component {
 
   render() {
     return (
-      <div>
-        {this.state.timer}
-        {this.props.questions[this.state.tracker].question}
-      </div>
+      <Motion
+        defaultStyle={{ x: 500, y: -500 }}
+        style={{
+          x: this.state.flip
+            ? spring(0, { stiffness: 90, damping: 15 })
+            : spring(500, { stiffness: 150, damping: 15 }),
+          y: this.state.flip2
+            ? spring(0, { stiffness: 90, damping: 15 })
+            : spring(-500, { stiffness: 150, damping: 15 })
+        }}
+      >
+        {mot => {
+          return (
+            <div
+              style={{
+                height: "100vh",
+                width: `100%`,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                position: "relative",
+                overflow: "hidden"
+              }}
+            >
+              <div
+                style={{
+                  position: "relative",
+                  transform: `translateY(${mot.x}px)`
+                }}
+              >
+                {this.state.timer}
+                {this.props.questions[this.state.tracker].question}
+              </div>
+              <div
+                style={{
+                  position: "relative",
+                  transform: `translateY(${mot.y}px)`
+                }}
+              >
+                {this.state.timer}
+                {this.props.questions[this.state.tracker].question}
+              </div>
+            </div>
+          );
+        }}
+      </Motion>
     );
   }
 }

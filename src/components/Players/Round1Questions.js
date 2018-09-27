@@ -2,6 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import io from "socket.io-client";
 import { Motion, spring } from "react-motion";
+import Button from "@material-ui/core/Button";
+import _ from "lodash";
 
 const socket = io.connect(
   "http://localhost:3006/",
@@ -20,17 +22,27 @@ class Round1Questions extends React.Component {
       tracker: 0,
       timer: 5,
       flip: true,
-      flip2: false
+      flip2: false,
+      answers: [],
+      correctAnswer: ""
     };
     socket.on("tracker-update", tracker => {
       tracker === -1
         ? this.props.history.push("/PlayerResults")
-        : this.setState({
-            tracker: tracker,
-            timer: 5,
-            flip: !this.state.flip,
-            flip2: !this.state.flip2
-          });
+        : this.setState(
+            {
+              tracker: tracker,
+              timer: 5,
+              flip: !this.state.flip,
+              flip2: !this.state.flip2
+            },
+            () => {
+              this.shuffleAnswers(
+                this.props.questions[this.state.tracker].incorrect_answers,
+                this.props.questions[this.state.tracker].correct_answer
+              );
+            }
+          );
     });
     socket.on("timer-countdown", time => {
       this.setState({ timer: time });
@@ -39,7 +51,17 @@ class Round1Questions extends React.Component {
 
   componentDidMount() {
     socket.emit("join-room", { room: this.props.room });
+    this.shuffleAnswers(
+      this.props.questions[this.state.tracker].incorrect_answers,
+      this.props.questions[this.state.tracker].correct_answer
+    );
   }
+
+  shuffleAnswers = (incorrectAnswers, correctAnswer) => {
+    let answers = _.concat(incorrectAnswers, correctAnswer);
+    let shuffledAnswers = _.shuffle(answers);
+    this.setState({ answers: shuffledAnswers, correctAnswer });
+  };
 
   render() {
     return (
@@ -70,21 +92,41 @@ class Round1Questions extends React.Component {
             >
               <div
                 style={{
-                  position: "relative",
+                  position: "fixed",
+                  top: "42%",
+                  left: "42%",
                   transform: `translateY(${mot.x}px)`
                 }}
               >
                 {this.state.timer}
                 {this.props.questions[this.state.tracker].question}
+                {this.state.answers.map((val, i) => {
+                  return (
+                    <div key={i}>
+                      <Button variant="contained" size="large">
+                        {val}
+                      </Button>
+                    </div>
+                  );
+                })}
               </div>
               <div
                 style={{
-                  position: "relative",
+                  position: "fixed",
+                  top: "42%",
+                  left: "42%",
                   transform: `translateY(${mot.y}px)`
                 }}
               >
                 {this.state.timer}
                 {this.props.questions[this.state.tracker].question}
+                {this.state.answers.map((val, i) => {
+                  return (
+                    <Button variant="contained" size="large">
+                      {val}
+                    </Button>
+                  );
+                })}
               </div>
             </div>
           );

@@ -3,6 +3,7 @@ import { Motion, spring } from "react-motion";
 import io from "socket.io-client";
 import { connect } from "react-redux";
 import { updateQuestions } from "./../../ducks/reducer";
+import _ from "lodash";
 
 const socket = io.connect(
   "http://localhost:3006/",
@@ -22,20 +23,26 @@ class Round1 extends React.Component {
       tracker: -1,
       timer: 5,
       flip1: false,
-      flip2: false
+      flip2: false,
+      answers: [],
+      correctAnswer: ""
     };
     socket.on("timer-finish", data => {
       this.setState(
         {
           tracker: ++this.state.tracker,
           flip1: !this.state.flip1,
-          flip2: !this.state.flip2
+          flip2: !this.state.flip2,
+          timer: 5
         },
         () => {
           if (this.state.tracker <= 9) {
+            this.shuffleAnswers(
+              this.props.questions[this.state.tracker].incorrect_answers,
+              this.props.questions[this.state.tracker].correct_answer
+            );
             socket.emit("update-tracker", {
               tracker: this.state.tracker,
-
               room: this.props.room
             });
             socket.emit("timer-start", { room: this.props.room, time: 5 });
@@ -67,6 +74,10 @@ class Round1 extends React.Component {
           flip1: !this.state.flip1
         },
         () => {
+          this.shuffleAnswers(
+            this.props.questions[this.state.tracker].incorrect_answers,
+            this.props.questions[this.state.tracker].correct_answer
+          );
           socket.emit("timer-start", { room: this.props.room, time: 5 });
           socket.emit("recieve-questions", {
             room: this.props.room,
@@ -77,22 +88,41 @@ class Round1 extends React.Component {
     }, 3000);
   }
 
+  shuffleAnswers = (incorrectAnswers, correctAnswer) => {
+    let answers = _.concat(incorrectAnswers, correctAnswer);
+    let shuffledAnswers = _.shuffle(answers);
+    this.setState({ answers: shuffledAnswers, correctAnswer });
+  };
+
   render() {
+    console.log("answers", this.state.answers);
+    console.log("correctAnswer", this.state.correctAnswer);
+
     return (
       <Motion
-        defaultStyle={{ x: -500, y: 500, z: -500 }}
+        defaultStyle={{
+          x: -500,
+          y: 100,
+          z: -100,
+          xOpacity: 1,
+          yOpacity: 1,
+          zOpacity: 1
+        }}
         style={{
+          xOpacity: this.state.introduction ? spring(1) : spring(0),
+          yOpacity: this.state.flip1 ? spring(1) : spring(0),
+          zOpacity: this.state.flip2 ? spring(1) : spring(0),
           x: this.state.introduction
             ? spring(0, { stiffness: 60, damping: 7 })
             : spring(-800, { stiffness: 60, damping: 7 }),
           y:
             this.state.flip1 === true
-              ? spring(0, { stiffness: 60, damping: 17 })
-              : spring(500, { stiffness: 60, damping: 17 }),
+              ? spring(50, { stiffness: 60, damping: 17 })
+              : spring(-100, { stiffness: 60, damping: 17 }),
           z:
             this.state.flip2 === true
-              ? spring(0, { stiffness: 60, damping: 17 })
-              : spring(-500, { stiffness: 60, damping: 17 })
+              ? spring(-50, { stiffness: 60, damping: 17 })
+              : spring(100, { stiffness: 60, damping: 17 })
         }}
       >
         {mot => {
@@ -102,37 +132,85 @@ class Round1 extends React.Component {
                 overflow: "hidden",
                 height: "100vh",
                 width: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                position: "relative",
-                flexDirection: "column"
+                position: "relative"
               }}
             >
-              <div style={{ transform: `translateX(${mot.x}px)` }}>Get</div>
-              <div style={{ transform: `translateX(${-mot.x}px)` }}>Ready</div>
-              <div style={{ transform: `translateX(${mot.x}px)` }}>
-                5 seconds to answer each question!
+              <div style={{ position: "fixed", top: "42%", left: "42%" }}>
+                <div
+                  style={{
+                    transform: `translateX(${mot.x}px)`,
+                    opacity: mot.xOpacity
+                  }}
+                >
+                  Get
+                </div>
+                <div
+                  style={{
+                    transform: `translateX(${-mot.x}px)`,
+                    opacity: mot.xOpacity
+                  }}
+                >
+                  Ready
+                </div>
+                <div
+                  style={{
+                    transform: `translateX(${mot.x}px)`,
+                    opacity: mot.xOpacity
+                  }}
+                >
+                  5 seconds to answer each question!
+                </div>
               </div>
               {this.state.tracker !== -1 ? (
                 <div
                   style={{
                     position: "relative",
-                    height: "100vh",
+                    height: "100%",
                     width: "100%",
                     display: "flex",
                     justifyContent: "center",
-                    alignItems: "center",
-                    flexDirection: "column"
+                    alignItems: "center"
                   }}
                 >
-                  <div style={{ transform: `translateY(${mot.y}px)` }}>
-                    {this.state.timer}
-                    {`${this.props.questions[this.state.tracker].question}`}
+                  <div
+                    style={{
+                      transform: `translateX(${mot.y}%)`,
+                      opacity: mot.yOpacity
+                    }}
+                  >
+                    <div className="question-timer">{this.state.timer}</div>
+                    <div className="question-host">
+                      {`${this.props.questions[this.state.tracker].question}`}
+                    </div>
+                    <div className="answer-display">
+                      {this.state.answers.map((val, i) => {
+                        return (
+                          <div key={i} className="answer-choices">
+                            {val}
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
-                  <div style={{ transform: `translateY(${mot.z}px)` }}>
-                    {this.state.timer}
-                    {`${this.props.questions[this.state.tracker].question}`}
+                  <div
+                    style={{
+                      transform: `translateX(${mot.z}%)`,
+                      opacity: mot.zOpacity
+                    }}
+                  >
+                    <div className="question-timer">{this.state.timer}</div>
+                    <div className="question-host">
+                      {`${this.props.questions[this.state.tracker].question}`}
+                    </div>
+                    <div className="answer-display">
+                      {this.state.answers.map((val, i) => {
+                        return (
+                          <div key={i} className="answer-choices">
+                            {val}
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               ) : (

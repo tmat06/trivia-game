@@ -68,3 +68,32 @@
   align-items: center;
   width: 100%;
 }
+
+.question-timer {
+  font-family: "Rammetto One", cursive;
+  color: #66aae7;
+  text-shadow: 2px 2px 2px #333;
+  font-size: 40px;
+}
+
+.question-host {
+  color: #556d75;
+  font-family: "Roboto", sans-serif;
+  font-size: 35px;
+  margin-bottom: 4px;
+  text-shadow: 1px 1px 1px #333;
+}
+
+.answer-display {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.answer-choices {
+  width: 32%;
+  margin: 4%;
+  background-color: #333;
+  color: #eee;
+  padding: 5%;
+}

@@ -24,25 +24,47 @@ class Round1Questions extends React.Component {
       flip: true,
       flip2: false,
       answers: [],
-      correctAnswer: ""
+      correctAnswer: "",
+      points: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      canAnswer: true,
+      chosenAnswer: ""
     };
     socket.on("tracker-update", tracker => {
-      tracker === -1
-        ? this.props.history.push("/PlayerResults")
-        : this.setState(
-            {
-              tracker: tracker,
-              timer: 5,
-              flip: !this.state.flip,
-              flip2: !this.state.flip2
-            },
-            () => {
-              this.shuffleAnswers(
-                this.props.questions[this.state.tracker].incorrect_answers,
-                this.props.questions[this.state.tracker].correct_answer
-              );
-            }
-          );
+      if (tracker === -1) {
+        socket.emit("scores", {
+          room: this.props.room,
+          points: this.state.points,
+          character: this.props.character
+        });
+        this.props.history.push("/PlayerResults");
+      } else {
+        this.setState(
+          {
+            tracker: tracker,
+            timer: 5,
+            flip: !this.state.flip,
+            flip2: !this.state.flip2,
+            canAnswer: true
+          },
+          () => {
+            this.shuffleAnswers(
+              this.props.questions[this.state.tracker].incorrect_answers,
+              this.props.questions[this.state.tracker].correct_answer
+            );
+          }
+        );
+      }
     });
     socket.on("timer-countdown", time => {
       this.setState({ timer: time });
@@ -63,6 +85,24 @@ class Round1Questions extends React.Component {
     this.setState({ answers: shuffledAnswers, correctAnswer });
   };
 
+  checkAnswer = (answer, tracker) => {
+    let tempPoints = [...this.state.points];
+    if (answer === this.state.correctAnswer) {
+      tempPoints[tracker] = true;
+      this.setState({
+        points: [...tempPoints],
+        canAnswer: false,
+        chosenAnswer: answer
+      });
+    } else {
+      this.setState({
+        points: [...tempPoints],
+        canAnswer: false,
+        chosenAnswer: answer
+      });
+    }
+  };
+
   render() {
     return (
       <Motion
@@ -70,10 +110,10 @@ class Round1Questions extends React.Component {
         style={{
           x: this.state.flip
             ? spring(0, { stiffness: 90, damping: 15 })
-            : spring(500, { stiffness: 150, damping: 15 }),
+            : spring(500, { stiffness: 180, damping: 15 }),
           y: this.state.flip2
             ? spring(0, { stiffness: 90, damping: 15 })
-            : spring(-500, { stiffness: 150, damping: 15 })
+            : spring(-500, { stiffness: 180, damping: 15 })
         }}
       >
         {mot => {
@@ -100,15 +140,25 @@ class Round1Questions extends React.Component {
               >
                 {this.state.timer}
                 {this.props.questions[this.state.tracker].question}
-                {this.state.answers.map((val, i) => {
-                  return (
-                    <div key={i}>
-                      <Button variant="contained" size="large">
-                        {val}
-                      </Button>
-                    </div>
-                  );
-                })}
+                {this.state.canAnswer ? (
+                  this.state.answers.map((val, i) => {
+                    return (
+                      <div key={i}>
+                        <Button
+                          variant="contained"
+                          size="large"
+                          onClick={() =>
+                            this.checkAnswer(val, this.state.tracker)
+                          }
+                        >
+                          {val}
+                        </Button>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div>{this.state.chosenAnswer}</div>
+                )}
               </div>
               <div
                 style={{
@@ -120,13 +170,24 @@ class Round1Questions extends React.Component {
               >
                 {this.state.timer}
                 {this.props.questions[this.state.tracker].question}
-                {this.state.answers.map((val, i) => {
-                  return (
-                    <Button variant="contained" size="large">
-                      {val}
-                    </Button>
-                  );
-                })}
+                {this.state.canAnswer ? (
+                  this.state.answers.map((val, i) => {
+                    return (
+                      <Button
+                        key={i}
+                        variant="contained"
+                        size="large"
+                        onClick={() =>
+                          this.checkAnswer(val, this.state.tracker)
+                        }
+                      >
+                        {val}
+                      </Button>
+                    );
+                  })
+                ) : (
+                  <div>{this.state.chosenAnswer}</div>
+                )}
               </div>
             </div>
           );
@@ -137,7 +198,11 @@ class Round1Questions extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return { questions: state.questions, room: state.room };
+  return {
+    questions: state.questions,
+    room: state.room,
+    character: state.character
+  };
 }
 
 export default connect(mapStateToProps)(Round1Questions);

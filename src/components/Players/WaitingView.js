@@ -47,7 +47,7 @@ class WaitingView extends React.Component {
         >
           {this.props.character.name}
         </h1>
-        <img src={avatar} style={{ width: "100%" }} />
+        <img src={avatar} alt="player avatar" style={{ width: "100%" }} />
         <h3
           style={{
             color: "#333",
@@ -70,7 +70,11 @@ class WaitingView extends React.Component {
         >
           {`Waiting on Host to press start`}
           <div>
-            <img src="/loader.png" style={{ height: "100px" }} />
+            <img
+              src="/loader.png"
+              alt="dot loading gif"
+              style={{ height: "100px" }}
+            />
           </div>
         </p>
       </div>

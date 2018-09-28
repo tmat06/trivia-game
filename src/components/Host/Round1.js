@@ -28,9 +28,11 @@ class Round1 extends React.Component {
       correctAnswer: ""
     };
     socket.on("timer-finish", data => {
+      let tempTracker = this.state.tracker;
+      tempTracker++;
       this.setState(
         {
-          tracker: ++this.state.tracker,
+          tracker: tempTracker,
           flip1: !this.state.flip1,
           flip2: !this.state.flip2,
           timer: 5
@@ -67,10 +69,13 @@ class Round1 extends React.Component {
     this.props.updateQuestions(this.props.questions);
     this.setState({ introduction: true });
     setTimeout(() => {
+      //doing this just to get rid of the react warning
+      let tempTracker = this.state.tracker;
+      tempTracker++;
       this.setState(
         {
           introduction: false,
-          tracker: ++this.state.tracker,
+          tracker: tempTracker,
           flip1: !this.state.flip1
         },
         () => {
@@ -95,9 +100,7 @@ class Round1 extends React.Component {
   };
 
   render() {
-    console.log("answers", this.state.answers);
-    console.log("correctAnswer", this.state.correctAnswer);
-
+    if (this.state.tracker > 9) this.props.moveRound("results");
     return (
       <Motion
         defaultStyle={{
@@ -161,7 +164,7 @@ class Round1 extends React.Component {
                   5 seconds to answer each question!
                 </div>
               </div>
-              {this.state.tracker !== -1 ? (
+              {this.state.tracker !== -1 && this.state.tracker !== 10 ? (
                 <div
                   style={{
                     position: "relative",

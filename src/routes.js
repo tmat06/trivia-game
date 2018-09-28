@@ -4,6 +4,7 @@ import LoginAnimation from "./components/Login/LoginAnimation";
 import HostView from "./components/Host/HostView";
 import WaitingView from "./components/Players/WaitingView";
 import Round1Questions from "./components/Players/Round1Questions";
+import PlayerResults from "./components/Players/PlayerResults";
 
 export default (
   <Switch>
@@ -11,5 +12,6 @@ export default (
     <Route path="/HostView" component={HostView} />
     <Route path="/WaitingView" component={WaitingView} />
     <Route path="/Round1Questions" component={Round1Questions} />
+    <Route path="/PlayerResults" component={PlayerResults} />
   </Switch>
 );

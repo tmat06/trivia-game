@@ -4,31 +4,54 @@ import axios from "axios";
 import WaitingLobby from "./WaitingLobby";
 import Round1 from "./Round1";
 import Results from "./Results";
+import io from "socket.io-client";
+
+const socket = io.connect(
+  "http://localhost:3006/",
+  {
+    reconnection: true,
+    reconnectionDelay: 1000,
+    reconnectionDelayMax: 5000,
+    reconnectionAttempts: 99999
+  }
+);
 
 class HostView extends React.Component {
   constructor() {
     super();
     this.state = {
       currentRound: "waitingLobby",
-      questions: []
+      questions: [],
+      rankings: []
     };
+    socket.on("player-scores", data => {
+      let amtPoints = data.points.filter((val, i) => {
+        return val === true;
+      });
+
+      let tempRankings = [...this.state.rankings];
+      data.character.amtPoints = amtPoints.length;
+      tempRankings.push(data.character);
+      let tempRanks = tempRankings.sort((a, b) => {
+        return a.amtPoints < b.amtPoints;
+      });
+      this.setState({ rankings: [...tempRanks] });
+    });
   }
   componentDidMount() {
+    socket.emit("connect-room", { room: this.props.room });
     window.addEventListener("beforeunload", this.deleteRoom);
   }
   componentWillUnmount() {
-    axios.delete(`/delete-room/${this.props.room}`).then(response => {
-      console.log("room deleted");
-    });
+    axios.delete(`/delete-room/${this.props.room}`).then(response => {});
     window.removeEventListener("beforeunload", this.deleteRoom);
+    socket.disconnect();
   }
 
   deleteRoom = e => {
     //This will erase the room from the database so that it can be reused.
     e.preventDefault();
-    axios.delete(`/delete-room/${this.props.room}`).then(response => {
-      console.log("room deleted");
-    });
+    axios.delete(`/delete-room/${this.props.room}`).then(response => {});
     e.returnValue = "unloading";
   };
 
@@ -39,6 +62,7 @@ class HostView extends React.Component {
       });
       this.setState({ currentRound: nextRound });
     }
+    if (nextRound === "results") this.setState({ currentRound: nextRound });
   };
 
   roundChooser = () => {
@@ -50,7 +74,12 @@ class HostView extends React.Component {
           <Round1 moveRound={this.moveRound} questions={this.state.questions} />
         );
       case "results":
-        return <Results />;
+        return (
+          <Results
+            questions={this.state.questions}
+            rankings={this.state.rankings}
+          />
+        );
       default:
         return <WaitingLobby moveRound={this.moveRound} />;
     }

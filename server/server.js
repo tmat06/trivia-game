@@ -86,6 +86,10 @@ io.on("connection", socket => {
     io.sockets.in(data.room).emit("tracker-update", data.tracker);
   });
 
+  socket.on("scores", data => {
+    io.sockets.in(data.room).emit("player-scores", data);
+  });
+
   socket.on("disconnect", () => {
     console.log("disconnected :(");
   });

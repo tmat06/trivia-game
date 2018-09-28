@@ -35,9 +35,13 @@ class WaitingLobby extends React.Component {
       let tempPlayerList = [...this.state.playerList];
       if (this.state.tracker < 7) {
         tempPlayerList[this.state.tracker] = player;
+        //Doing this to get rid of React Warning
+        let tempTracker = this.state.tracker;
+        tempTracker++;
+        ////////////////////////////////////////
         this.setState({
           playerList: [...tempPlayerList],
-          tracker: ++this.state.tracker
+          tracker: tempTracker
         });
       } else {
         console.log("player ignored");
@@ -109,6 +113,7 @@ class WaitingLobby extends React.Component {
                               >
                                 <img
                                   src={avatar}
+                                  alt="player avatar"
                                   style={{
                                     borderRadius: "100px",
                                     opacity: mot.op - 0.01

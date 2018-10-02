@@ -84,6 +84,13 @@
   text-shadow: 1px 1px 1px #333;
 }
 
+.question-player {
+  color: #556d75;
+  font-family: "Roboto", sans-serif;
+  font-size: 25px;
+  text-shadow: 1px 1px 1px #333;
+}
+
 .answer-display {
   display: flex;
   justify-content: space-around;

@@ -134,7 +134,12 @@ class Round1Questions extends React.Component {
             >
               <div
                 className="question-timer"
-                style={{ position: "fixed", top: 5 }}
+                style={{
+                  position: "fixed",
+                  top: 5,
+                  left: "50%",
+                  transform: "translateX(-50%)"
+                }}
               >
                 {this.state.timer}
               </div>
@@ -164,7 +169,9 @@ class Round1Questions extends React.Component {
                       alignItems: "center"
                     }}
                   >
-                    {this.props.questions[this.state.tracker].question}
+                    <div className="question-player">
+                      {this.props.questions[this.state.tracker].question}
+                    </div>
                     {this.state.canAnswer ? (
                       this.state.answers.map((val, i) => {
                         return (
@@ -182,7 +189,9 @@ class Round1Questions extends React.Component {
                         );
                       })
                     ) : (
-                      <div>{this.state.chosenAnswer}</div>
+                      <div className="question-timer">
+                        {this.state.chosenAnswer}
+                      </div>
                     )}
                   </div>
                 </div>
@@ -200,8 +209,9 @@ class Round1Questions extends React.Component {
                       alignItems: "center"
                     }}
                   >
-                    {this.state.timer}
-                    {this.props.questions[this.state.tracker].question}
+                    <div className="question-player">
+                      {this.props.questions[this.state.tracker].question}
+                    </div>
                     {this.state.canAnswer ? (
                       this.state.answers.map((val, i) => {
                         return (
@@ -218,7 +228,9 @@ class Round1Questions extends React.Component {
                         );
                       })
                     ) : (
-                      <div>{this.state.chosenAnswer}</div>
+                      <div className="question-timer">
+                        {this.state.chosenAnswer}
+                      </div>
                     )}
                   </div>
                 </div>

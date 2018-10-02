@@ -110,15 +110,15 @@ class Round1Questions extends React.Component {
   render() {
     return (
       <Motion
-        defaultStyle={{ x: 500, y: -500, xOpacity: 0, yOpacity: 0 }}
+        defaultStyle={{ x: 100, y: -100, xOpacity: 1, yOpacity: 0 }}
         style={{
           x: this.state.flip
-            ? spring(0, { stiffness: 90, damping: 15 })
-            : spring(500, { stiffness: 180, damping: 15 }),
+            ? spring(50, { stiffness: 90, damping: 15 })
+            : spring(-100, { stiffness: 180, damping: 15 }),
           xOpacity: this.state.flip ? spring(1) : spring(0),
           y: this.state.flip2
-            ? spring(0, { stiffness: 90, damping: 15 })
-            : spring(-500, { stiffness: 180, damping: 15 }),
+            ? spring(-50, { stiffness: 90, damping: 15 })
+            : spring(100, { stiffness: 180, damping: 15 }),
           yOpacity: this.state.flip2 ? spring(1) : spring(0)
         }}
       >
@@ -127,75 +127,101 @@ class Round1Questions extends React.Component {
             <div
               style={{
                 height: "100vh",
-                width: `100%`,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
+                overflow: "hidden",
                 position: "relative",
-                overflow: "hidden"
+                width: `100%`
               }}
             >
               <div
-                style={{
-                  position: "fixed",
-                  top: "0%",
-                  left: "0%",
-                  transform: `translateY(${mot.x}px)`,
-                  opacity: mot.xOpacity
-                }}
+                className="question-timer"
+                style={{ position: "fixed", top: 5 }}
               >
                 {this.state.timer}
-                {this.props.questions[this.state.tracker].question}
-                {this.state.canAnswer ? (
-                  this.state.answers.map((val, i) => {
-                    return (
-                      <div key={i}>
-                        <Button
-                          variant="contained"
-                          size="large"
-                          onClick={() =>
-                            this.checkAnswer(val, this.state.tracker)
-                          }
-                        >
-                          {val}
-                        </Button>
-                      </div>
-                    );
-                  })
-                ) : (
-                  <div>{this.state.chosenAnswer}</div>
-                )}
               </div>
+
               <div
                 style={{
-                  position: "fixed",
-                  top: "0%",
-                  left: "0%",
-                  transform: `translateY(${mot.y}px)`,
-                  opacity: mot.yOpacity
+                  position: "relative",
+                  height: "100%",
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column"
                 }}
               >
-                {this.state.timer}
-                {this.props.questions[this.state.tracker].question}
-                {this.state.canAnswer ? (
-                  this.state.answers.map((val, i) => {
-                    return (
-                      <Button
-                        key={i}
-                        variant="contained"
-                        size="large"
-                        onClick={() =>
-                          this.checkAnswer(val, this.state.tracker)
-                        }
-                      >
-                        {val}
-                      </Button>
-                    );
-                  })
-                ) : (
-                  <div>{this.state.chosenAnswer}</div>
-                )}
+                <div
+                  style={{
+                    transform: `translateY(${mot.x}%)`,
+                    opacity: mot.xOpacity
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                  >
+                    {this.props.questions[this.state.tracker].question}
+                    {this.state.canAnswer ? (
+                      this.state.answers.map((val, i) => {
+                        return (
+                          <div key={i}>
+                            <Button
+                              variant="contained"
+                              size="large"
+                              onClick={() =>
+                                this.checkAnswer(val, this.state.tracker)
+                              }
+                            >
+                              {val}
+                            </Button>
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <div>{this.state.chosenAnswer}</div>
+                    )}
+                  </div>
+                </div>
+                <div
+                  style={{
+                    transform: `translateY(${mot.y}%)`,
+                    opacity: mot.yOpacity
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                  >
+                    {this.state.timer}
+                    {this.props.questions[this.state.tracker].question}
+                    {this.state.canAnswer ? (
+                      this.state.answers.map((val, i) => {
+                        return (
+                          <Button
+                            key={i}
+                            variant="contained"
+                            size="large"
+                            onClick={() =>
+                              this.checkAnswer(val, this.state.tracker)
+                            }
+                          >
+                            {val}
+                          </Button>
+                        );
+                      })
+                    ) : (
+                      <div>{this.state.chosenAnswer}</div>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           );

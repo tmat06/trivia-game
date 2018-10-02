@@ -39,6 +39,7 @@ class HostView extends React.Component {
     });
   }
   componentDidMount() {
+    console.log('this.props.room', this.props.room)
     socket.emit("connect-room", { room: this.props.room });
     window.addEventListener("beforeunload", this.deleteRoom);
   }

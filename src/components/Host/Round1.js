@@ -144,6 +144,7 @@ class Round1 extends React.Component {
             >
               <div style={{ position: "fixed", top: "42%", left: "42%" }}>
                 <div
+                  className="question-timer"
                   style={{
                     transform: `translateX(${mot.x}px)`,
                     opacity: mot.xOpacity
@@ -152,6 +153,7 @@ class Round1 extends React.Component {
                   Get
                 </div>
                 <div
+                  className="question-timer"
                   style={{
                     transform: `translateX(${-mot.x}px)`,
                     opacity: mot.xOpacity
@@ -160,7 +162,9 @@ class Round1 extends React.Component {
                   Ready
                 </div>
                 <div
+                  className="question-timer"
                   style={{
+                    fontSize: "20px",
                     transform: `translateX(${mot.x}px)`,
                     opacity: mot.xOpacity
                   }}

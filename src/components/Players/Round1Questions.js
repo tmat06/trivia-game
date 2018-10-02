@@ -80,9 +80,13 @@ class Round1Questions extends React.Component {
   }
 
   shuffleAnswers = (incorrectAnswers, correctAnswer) => {
-    let answers = _.concat(incorrectAnswers, correctAnswer);
-    let shuffledAnswers = _.shuffle(answers);
-    this.setState({ answers: shuffledAnswers, correctAnswer });
+    if (correctAnswer === "True" || correctAnswer === "False") {
+      this.setState({ answers: ["True", "False"], correctAnswer });
+    } else {
+      let answers = _.concat(incorrectAnswers, correctAnswer);
+      let shuffledAnswers = _.shuffle(answers);
+      this.setState({ answers: shuffledAnswers, correctAnswer });
+    }
   };
 
   checkAnswer = (answer, tracker) => {
@@ -106,14 +110,16 @@ class Round1Questions extends React.Component {
   render() {
     return (
       <Motion
-        defaultStyle={{ x: 500, y: -500 }}
+        defaultStyle={{ x: 500, y: -500, xOpacity: 0, yOpacity: 0 }}
         style={{
           x: this.state.flip
             ? spring(0, { stiffness: 90, damping: 15 })
             : spring(500, { stiffness: 180, damping: 15 }),
+          xOpacity: this.state.flip ? spring(1) : spring(0),
           y: this.state.flip2
             ? spring(0, { stiffness: 90, damping: 15 })
-            : spring(-500, { stiffness: 180, damping: 15 })
+            : spring(-500, { stiffness: 180, damping: 15 }),
+          yOpacity: this.state.flip2 ? spring(1) : spring(0)
         }}
       >
         {mot => {
@@ -133,9 +139,10 @@ class Round1Questions extends React.Component {
               <div
                 style={{
                   position: "fixed",
-                  top: "42%",
-                  left: "42%",
-                  transform: `translateY(${mot.x}px)`
+                  top: "0%",
+                  left: "0%",
+                  transform: `translateY(${mot.x}px)`,
+                  opacity: mot.xOpacity
                 }}
               >
                 {this.state.timer}
@@ -163,9 +170,10 @@ class Round1Questions extends React.Component {
               <div
                 style={{
                   position: "fixed",
-                  top: "42%",
-                  left: "42%",
-                  transform: `translateY(${mot.y}px)`
+                  top: "0%",
+                  left: "0%",
+                  transform: `translateY(${mot.y}px)`,
+                  opacity: mot.yOpacity
                 }}
               >
                 {this.state.timer}

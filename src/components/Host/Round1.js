@@ -94,9 +94,13 @@ class Round1 extends React.Component {
   }
 
   shuffleAnswers = (incorrectAnswers, correctAnswer) => {
-    let answers = _.concat(incorrectAnswers, correctAnswer);
-    let shuffledAnswers = _.shuffle(answers);
-    this.setState({ answers: shuffledAnswers, correctAnswer });
+    if (correctAnswer === "True" || correctAnswer === "False") {
+      this.setState({ answers: ["True", "False"], correctAnswer });
+    } else {
+      let answers = _.concat(incorrectAnswers, correctAnswer);
+      let shuffledAnswers = _.shuffle(answers);
+      this.setState({ answers: shuffledAnswers, correctAnswer });
+    }
   };
 
   render() {

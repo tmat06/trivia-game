@@ -1,8 +1,8 @@
 import React from "react";
+import { Motion, spring } from "react-motion";
 import io from "socket.io-client";
 import { connect } from "react-redux";
 import toonavatar from "cartoon-avatar";
-import { Motion, spring } from "react-motion";
 import Button from "@material-ui/core/Button";
 
 const socket = io.connect(
@@ -33,7 +33,7 @@ class WaitingLobby extends React.Component {
     };
     socket.on("joining-room", player => {
       let tempPlayerList = [...this.state.playerList];
-      if (this.state.tracker < 7) {
+      if (this.state.tracker < 8) {
         tempPlayerList[this.state.tracker] = player;
         //Doing this to get rid of React Warning
         let tempTracker = this.state.tracker;

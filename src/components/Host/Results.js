@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Motion, spring } from "react-motion";
 import io from "socket.io-client";
+import Button from "@material-ui/core/Button";
 
 const socket = io.connect(
   "http://localhost:3006/",
@@ -26,7 +27,7 @@ class Results extends React.Component {
     socket.emit("connect-room", { room: this.props.room });
     setTimeout(() => {
       this.setState({ introduction: false, showResults: true });
-    }, 5000);
+    }, 3000);
   }
 
   render() {
@@ -46,8 +47,11 @@ class Results extends React.Component {
       >
         {mot => {
           return (
-            <div style={{ height: "100vh", width: "100%" }}>
+            <div
+              style={{ height: "100vh", width: "100%", position: "relative" }}
+            >
               <div
+                className="question-timer"
                 style={{
                   transform: `translateX(${mot.x}px)`,
                   opacity: mot.xOpacity
@@ -55,17 +59,32 @@ class Results extends React.Component {
               >
                 RESULTS
               </div>
+              <div
+                style={{
+                  opacity: mot.yOpacity,
+                  display: "flex",
+                  justifyContent: "space-around"
+                }}
+              >
+                <Button variant="contained" size="large" fullWidth={true}>
+                  Questions
+                </Button>
+                <Button variant="contained" size="large" fullWidth={true}>
+                  Play Again
+                </Button>
+              </div>
               {this.props.rankings.map((val, i) => {
                 return (
                   <div
                     key={i}
+                    className="question-host"
                     style={{
                       opacity: mot.yOpacity,
                       transform: `translateY(${mot.y * i}px)`
                     }}
                   >
-                    {val.name}
-                    {val.amtPoints}
+                    <div>{val.name}</div>
+                    <div className="question-timer">{val.amtPoints}</div>
                   </div>
                 );
               })}
@@ -78,7 +97,7 @@ class Results extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return { room: state.room };
+  return { room: state.room, questions: state.questions };
 }
 
 export default connect(mapStateToProps)(Results);

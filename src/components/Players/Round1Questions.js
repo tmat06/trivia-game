@@ -219,6 +219,7 @@ class Round1Questions extends React.Component {
                             key={i}
                             variant="contained"
                             size="large"
+                            fullWidth={true}
                             onClick={() =>
                               this.checkAnswer(val, this.state.tracker)
                             }
@@ -228,7 +229,10 @@ class Round1Questions extends React.Component {
                         );
                       })
                     ) : (
-                      <div className="question-timer">
+                      <div
+                        className="question-timer"
+                        style={{ marginTop: "15px" }}
+                      >
                         {this.state.chosenAnswer}
                       </div>
                     )}

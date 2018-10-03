@@ -162,7 +162,7 @@ class Round1 extends React.Component {
                   Ready
                 </div>
                 <div
-                  className="question-timer"
+                  className="question-host"
                   style={{
                     fontSize: "20px",
                     transform: `translateX(${mot.x}px)`,

@@ -5,6 +5,7 @@ import WaitingLobby from "./WaitingLobby";
 import Round1 from "./Round1";
 import Results from "./Results";
 import io from "socket.io-client";
+import { updateQuestions } from "./../../ducks/reducer";
 
 const socket = io.connect(
   "http://localhost:3006/",
@@ -37,9 +38,13 @@ class HostView extends React.Component {
       });
       this.setState({ rankings: [...tempRanks] });
     });
+
+    socket.on("questions", questions => {
+      this.props.updateQuestions(questions);
+    });
   }
   componentDidMount() {
-    console.log('this.props.room', this.props.room)
+    console.log("this.props.room", this.props.room);
     socket.emit("connect-room", { room: this.props.room });
     window.addEventListener("beforeunload", this.deleteRoom);
   }
@@ -95,4 +100,7 @@ function mapStateToProps(state) {
   return { room: state.room };
 }
 
-export default connect(mapStateToProps)(HostView);
+export default connect(
+  mapStateToProps,
+  { updateQuestions }
+)(HostView);

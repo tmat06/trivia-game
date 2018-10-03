@@ -5,3 +5,9 @@ rank during match
 play again
 
 regex questions and answers
+
+style results page
+
+show all questions in results page
+
+redux persist

@@ -11,7 +11,6 @@ const UPDATE_QUESTIONS = "UPDATE_QUESTIONS";
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case JOIN_ROOM:
-      console.log("room", action.payload);
       return Object.assign({}, state, { room: action.payload });
     case UPDATE_CHARACTER:
       return Object.assign({}, state, { character: action.payload });

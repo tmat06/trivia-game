@@ -28,10 +28,17 @@ app.post("/create-room", (req, res) => {
   });
 });
 
-app.get("/get-questions", (req, res) => {
-  axios.get(`https://opentdb.com/api.php?amount=10`).then(response => {
-    res.status(200).send(response.data);
-  });
+app.get("/get-questions/:category", (req, res) => {
+  axios
+    .get(
+      `https://opentdb.com/api.php?amount=10${
+        req.params.category != -1 ? "&category=" + req.params.category : ""
+      }`
+    )
+    .then(response => {
+      //use RegEx here for questions and answers
+      res.status(200).send(response.data);
+    });
 });
 
 app.delete("/delete-room/:room", (req, res) => {

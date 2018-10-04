@@ -1,4 +1,5 @@
-Category selector
+Todo:
+session token
 
 rank during match
 
@@ -10,4 +11,9 @@ style results page
 
 show all questions in results page
 
-redux persist
+show which questions they got correct in client results page
+
+redux persist.
+
+Complete:
+Category Selector

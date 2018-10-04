@@ -23,7 +23,8 @@ class HostView extends React.Component {
     this.state = {
       currentRound: "waitingLobby",
       questions: [],
-      rankings: []
+      rankings: [],
+      category: -1
     };
     socket.on("player-scores", data => {
       let amtPoints = data.points.filter((val, i) => {
@@ -61,9 +62,13 @@ class HostView extends React.Component {
     e.returnValue = "unloading";
   };
 
+  updateCategory = e => {
+    this.setState({ category: e.target.value });
+  };
+
   moveRound = nextRound => {
     if (nextRound === "round1") {
-      axios.get("/get-questions").then(response => {
+      axios.get(`/get-questions/${this.state.category}`).then(response => {
         this.setState({ questions: [...response.data.results] });
       });
       this.setState({ currentRound: nextRound });
@@ -74,7 +79,13 @@ class HostView extends React.Component {
   roundChooser = () => {
     switch (this.state.currentRound) {
       case "waitingLobby":
-        return <WaitingLobby moveRound={this.moveRound} />;
+        return (
+          <WaitingLobby
+            moveRound={this.moveRound}
+            updateCategory={this.updateCategory}
+            category={this.state.category}
+          />
+        );
       case "round1":
         return (
           <Round1 moveRound={this.moveRound} questions={this.state.questions} />

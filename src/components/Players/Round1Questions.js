@@ -4,6 +4,7 @@ import io from "socket.io-client";
 import { Motion, spring } from "react-motion";
 import Button from "@material-ui/core/Button";
 import _ from "lodash";
+import { updatePoints } from "./../../ducks/reducer";
 
 const socket = io.connect(
   "http://localhost:3006/",
@@ -47,6 +48,7 @@ class Round1Questions extends React.Component {
           points: this.state.points,
           character: this.props.character
         });
+        this.props.updatePoints(this.state.points);
         this.props.history.push("/PlayerResults");
       } else {
         this.setState(
@@ -133,10 +135,22 @@ class Round1Questions extends React.Component {
               }}
             >
               <div
-                className="question-timer"
+                className="question-host"
                 style={{
                   position: "fixed",
                   top: 5,
+                  left: "50%",
+                  transform: "translateX(-50%)"
+                }}
+              >
+                {this.state.tracker + 1}
+                /10
+              </div>
+              <div
+                className="question-timer"
+                style={{
+                  position: "fixed",
+                  top: 50,
                   left: "50%",
                   transform: "translateX(-50%)"
                 }}
@@ -255,4 +269,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Round1Questions);
+export default connect(
+  mapStateToProps,
+  { updatePoints }
+)(Round1Questions);

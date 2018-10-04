@@ -189,6 +189,10 @@ class Round1 extends React.Component {
                       opacity: mot.yOpacity
                     }}
                   >
+                    <div className="question-host">
+                      {this.state.tracker + 1}
+                      /10
+                    </div>
                     <div className="question-timer">{this.state.timer}</div>
                     <div className="question-host">
                       {`${this.props.questions[this.state.tracker].question}`}

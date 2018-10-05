@@ -66,7 +66,12 @@ class Results extends React.Component {
                   justifyContent: "space-around"
                 }}
               >
-                <Button variant="contained" size="large" fullWidth={true}>
+                <Button
+                  variant="contained"
+                  size="large"
+                  fullWidth={true}
+                  onClick={() => this.setState({ results: false })}
+                >
                   Questions
                 </Button>
                 <Button variant="contained" size="large" fullWidth={true}>

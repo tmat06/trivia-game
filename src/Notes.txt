@@ -1,13 +1,9 @@
 Todo:
 session token
 
-rank during match
-
 play again
 
 regex questions and answers
-
-style results page
 
 show all questions in results page
 
@@ -17,3 +13,6 @@ redux persist.
 
 Complete:
 Category Selector
+~rank during match //able to show their current score in match
+style results page
+rank shows on player side

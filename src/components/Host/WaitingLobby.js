@@ -74,7 +74,7 @@ class WaitingLobby extends React.Component {
                 <h1>Room Name:</h1>
                 <div>{this.props.room}</div>
               </div>
-              <h3>Category</h3>
+              <div id="waiting-lobby-name">Category</div>
               <Select
                 style={{ width: "600px" }}
                 open={this.state.open}

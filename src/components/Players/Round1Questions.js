@@ -26,6 +26,7 @@ class Round1Questions extends React.Component {
       flip2: false,
       answers: [],
       correctAnswer: "",
+      currentPoints: 0,
       points: [
         false,
         false,
@@ -96,6 +97,7 @@ class Round1Questions extends React.Component {
     if (answer === this.state.correctAnswer) {
       tempPoints[tracker] = true;
       this.setState({
+        currentPoints: ++this.state.currentPoints,
         points: [...tempPoints],
         canAnswer: false,
         chosenAnswer: answer
@@ -107,6 +109,12 @@ class Round1Questions extends React.Component {
         chosenAnswer: answer
       });
     }
+    let currentPoints = this.state.points.reduce((acc, val, i) => {
+      if (val === true) {
+        acc += 1;
+      }
+      return acc;
+    }, 0);
   };
 
   render() {
@@ -157,7 +165,18 @@ class Round1Questions extends React.Component {
               >
                 {this.state.timer}
               </div>
-
+              <div
+                className="question-host"
+                style={{
+                  position: "fixed",
+                  top: 85,
+                  left: "50%",
+                  transform: "translateX(-50%)"
+                }}
+              >
+                Points:
+                {this.state.currentPoints}
+              </div>
               <div
                 style={{
                   position: "relative",
@@ -239,7 +258,7 @@ class Round1Questions extends React.Component {
                               this.checkAnswer(val, this.state.tracker)
                             }
                           >
-                            {val}>
+                            {val}
                           </Button>
                         );
                       })

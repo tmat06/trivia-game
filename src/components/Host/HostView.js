@@ -38,6 +38,8 @@ class HostView extends React.Component {
         return a.amtPoints < b.amtPoints;
       });
       this.setState({ rankings: [...tempRanks] });
+      console.log("should emit at this point");
+      socket.emit("rankings", { room: this.props.room, rankings: tempRanks });
     });
 
     socket.on("questions", questions => {
@@ -45,7 +47,6 @@ class HostView extends React.Component {
     });
   }
   componentDidMount() {
-    console.log("this.props.room", this.props.room);
     socket.emit("connect-room", { room: this.props.room });
     window.addEventListener("beforeunload", this.deleteRoom);
   }

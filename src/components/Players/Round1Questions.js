@@ -189,17 +189,18 @@ class Round1Questions extends React.Component {
                     {this.state.canAnswer ? (
                       this.state.answers.map((val, i) => {
                         return (
-                          <div key={i}>
-                            <Button
-                              variant="contained"
-                              size="large"
-                              onClick={() =>
-                                this.checkAnswer(val, this.state.tracker)
-                              }
-                            >
-                              {val}
-                            </Button>
-                          </div>
+                          <Button
+                            key={i}
+                            style={{ margin: "10 0" }}
+                            variant="contained"
+                            size="large"
+                            fullWidth={true}
+                            onClick={() =>
+                              this.checkAnswer(val, this.state.tracker)
+                            }
+                          >
+                            {val}
+                          </Button>
                         );
                       })
                     ) : (
@@ -238,7 +239,7 @@ class Round1Questions extends React.Component {
                               this.checkAnswer(val, this.state.tracker)
                             }
                           >
-                            {val}
+                            {val}>
                           </Button>
                         );
                       })

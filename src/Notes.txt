@@ -5,10 +5,6 @@ play again
 
 regex questions and answers
 
-show all questions in results page
-
-show which questions they got correct in client results page
-
 redux persist.
 
 Complete:
@@ -16,3 +12,8 @@ Category Selector
 ~rank during match //able to show their current score in match
 style results page
 rank shows on player side
+show which questions they got correct in client results page
+
+
+RegEx:
+&quot === "

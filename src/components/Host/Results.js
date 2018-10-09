@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Motion, spring } from "react-motion";
 import io from "socket.io-client";
 import Button from "@material-ui/core/Button";
+import Drawer from "@material-ui/core/Drawer";
 
 const socket = io.connect(
   "http://localhost:3006/",
@@ -19,7 +20,8 @@ class Results extends React.Component {
     super();
     this.state = {
       introduction: true,
-      showResults: false
+      showResults: false,
+      questionDisplay: false
     };
   }
 
@@ -70,10 +72,62 @@ class Results extends React.Component {
                   variant="contained"
                   size="large"
                   fullWidth={true}
-                  onClick={() => this.setState({ results: false })}
+                  onClick={() => this.setState({ questionDisplay: true })}
                 >
                   Questions
                 </Button>
+                <Drawer
+                  anchor="bottom"
+                  open={this.state.questionDisplay}
+                  onClose={() => this.setState({ questionDisplay: false })}
+                >
+                  <div
+                    tabIndex={0}
+                    role="button"
+                    onClick={() => this.setState({ questionDisplay: false })}
+                    onKeyDown={() => this.setState({ questionDisplay: false })}
+                  >
+                    <div
+                      style={{
+                        height: "96vh",
+                        width: "100%",
+                        backgroundColor: "#EEE",
+                        overflow: "auto"
+                      }}
+                    >
+                      {this.props.questions.map((val, i) => {
+                        console.log("val", val);
+                        return (
+                          <div
+                            key={i}
+                            style={{
+                              height: "33%",
+                              width: "100%",
+                              margin: "10 0",
+                              boxShadow: "2px 2px 2px #333",
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "center",
+                              justifyContent: "space-around",
+                              backgroundColor: "#D3D3D3"
+                            }}
+                          >
+                            <div
+                              style={{ fontSize: "40px", fontColor: "#333" }}
+                            >
+                              Question: {val.question}
+                            </div>
+                            <div
+                              style={{ fontSize: "25px", fontColor: "#333" }}
+                            >
+                              Answer: {val.correct_answer}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </Drawer>
                 <Button variant="contained" size="large" fullWidth={true}>
                   Play Again
                 </Button>

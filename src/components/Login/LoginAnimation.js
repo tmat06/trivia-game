@@ -31,7 +31,6 @@ class LoginAnimation extends Component {
   }
 
   componentWillUnmount() {
-    console.log("runs after?");
     socket.disconnect();
   }
 

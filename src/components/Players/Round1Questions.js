@@ -40,7 +40,8 @@ class Round1Questions extends React.Component {
         false
       ],
       canAnswer: true,
-      chosenAnswer: ""
+      chosenAnswer: "",
+      sent: true
     };
     socket.on("tracker-update", tracker => {
       if (tracker === -1) {
@@ -109,12 +110,6 @@ class Round1Questions extends React.Component {
         chosenAnswer: answer
       });
     }
-    // let currentPoints = this.state.points.reduce((acc, val, i) => {
-    //   if (val === true) {
-    //     acc += 1;
-    //   }
-    //   return acc;
-    // }, 0);
   };
 
   render() {

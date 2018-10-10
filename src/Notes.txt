@@ -1,10 +1,6 @@
 Todo:
 session token
-
 play again
-
-regex questions and answers
-
 redux persist.
 
 Complete:
@@ -13,7 +9,28 @@ Category Selector
 style results page
 rank shows on player side
 show which questions they got correct in client results page
+regex questions and answers
 
 
 RegEx:
-&quot === "
+&quot; === "
+&#039; === '
+&ldquo;
+&rdquo;
+&e === é
+&uuml; === u with 2 dots
+ü
+&amp === &
+
+RegEx
+Socket
+Lodash
+Closure
+Express
+Axios
+Material UI
+React-Motion
+Outside API
+PostgreSQL
+redux
+Node

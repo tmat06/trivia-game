@@ -37,6 +37,40 @@ app.get("/get-questions/:category", (req, res) => {
     )
     .then(response => {
       //use RegEx here for questions and answers
+      console.log(response.data.results);
+      response.data.results.map((val, i) => {
+        val.question = val.question.replace(/&#039;/gi, "'");
+        val.question = val.question.replace(/&quot;/gi, '"');
+        val.question = val.question.replace(/&uuml;/gi, "ü");
+        val.question = val.question.replace(/&eacute;/gi, "é");
+        val.question = val.question.replace(/&ldquo;/gi, "'");
+        val.question = val.question.replace(/&rdquo;/gi, "'");
+        val.question = val.question.replace(/&amp;/gi, "&");
+
+        val.correct_answer = val.correct_answer.replace(/&#039;/gi, "'");
+        val.correct_answer = val.correct_answer.replace(/&quot;/gi, '"');
+        val.correct_answer = val.correct_answer.replace(/&uuml;/gi, "ü");
+        val.correct_answer = val.correct_answer.replace(/&eacute;/gi, "é");
+        val.correct_answer = val.correct_answer.replace(/&ldquo;/gi, "'");
+        val.correct_answer = val.correct_answer.replace(/&rdquo;/gi, "'");
+        val.question = val.question.replace(/&amp;/gi, "&");
+
+        val.incorrect_answers = val.incorrect_answers.map((val, i) => {
+          console.log("val", val);
+          val = val.replace(/&#039;/gi, "'");
+          val = val.replace(/&quot;/gi, '"');
+          val = val.replace(/&uuml;/gi, "ü");
+          val = val.replace(/&eacute;/gi, "é");
+          val = val.replace(/&ldquo;/gi, "'");
+          val = val.replace(/&rdquo;/gi, "'");
+          val = val.replace(/&amp;/gi, "&");
+
+          return val;
+        });
+
+        return val;
+      });
+
       res.status(200).send(response.data);
     });
 });
@@ -99,6 +133,10 @@ io.on("connection", socket => {
 
   socket.on("rankings", data => {
     io.sockets.in(data.room).emit("player-rankings", data);
+  });
+
+  socket.on("again-play", data => {
+    io.sockets.in(data.room).emit("play-again", data);
   });
 
   socket.on("disconnect", () => {

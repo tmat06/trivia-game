@@ -32,6 +32,12 @@ class Results extends React.Component {
     }, 3000);
   }
 
+  handlePlayAgain() {
+    this.props.playAgainSetUp();
+    socket.emit("again-play", { room: this.props.room });
+    this.props.moveRound("/");
+  }
+
   render() {
     return (
       <Motion
@@ -128,7 +134,12 @@ class Results extends React.Component {
                     </div>
                   </div>
                 </Drawer>
-                <Button variant="contained" size="large" fullWidth={true}>
+                <Button
+                  variant="contained"
+                  size="large"
+                  fullWidth={true}
+                  onClick={() => this.handlePlayAgain()}
+                >
                   Play Again
                 </Button>
               </div>

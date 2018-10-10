@@ -66,6 +66,10 @@ class HostView extends React.Component {
     this.setState({ category: e.target.value });
   };
 
+  playAgainSetUp = () => {
+    this.setState({ rankings: [], questions: [] });
+  };
+
   moveRound = nextRound => {
     if (nextRound === "round1") {
       axios.get(`/get-questions/${this.state.category}`).then(response => {
@@ -74,6 +78,7 @@ class HostView extends React.Component {
       this.setState({ currentRound: nextRound });
     }
     if (nextRound === "results") this.setState({ currentRound: nextRound });
+    if (nextRound === "/") this.props.history.push("/");
   };
 
   roundChooser = () => {
@@ -95,6 +100,8 @@ class HostView extends React.Component {
           <Results
             questions={this.state.questions}
             rankings={this.state.rankings}
+            moveRound={this.moveRound}
+            playAgainSetUp={this.playAgainSetUp}
           />
         );
       default:

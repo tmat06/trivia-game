@@ -25,6 +25,9 @@ class PlayerResults extends React.Component {
         if (val.name === this.props.name) this.setState({ rank: ++i });
       });
     });
+    socket.on("play-again", data => {
+      this.props.history.push("/");
+    });
   }
 
   componentDidMount() {

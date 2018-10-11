@@ -51,6 +51,7 @@ class Round1Questions extends React.Component {
           character: this.props.character
         });
         this.props.updatePoints(this.state.points);
+        socket.emit("leave-room", { room: this.props.room });
         this.props.history.push("/PlayerResults");
       } else {
         this.setState(

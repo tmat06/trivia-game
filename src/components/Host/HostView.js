@@ -5,7 +5,7 @@ import WaitingLobby from "./WaitingLobby";
 import Round1 from "./Round1";
 import Results from "./Results";
 import io from "socket.io-client";
-import { updateQuestions } from "./../../ducks/reducer";
+import { updateQuestions, purgeAll } from "./../../ducks/reducer";
 
 const socket = io.connect(
   "http://localhost:3006/",
@@ -46,13 +46,14 @@ class HostView extends React.Component {
     });
   }
   componentDidMount() {
+    this.setState({ rankings: [] });
     socket.emit("connect-room", { room: this.props.room });
     window.addEventListener("beforeunload", this.deleteRoom);
   }
   componentWillUnmount() {
     axios.delete(`/delete-room/${this.props.room}`).then(response => {});
     window.removeEventListener("beforeunload", this.deleteRoom);
-    socket.disconnect();
+    socket.emit("leave-room", { room: this.props.room });
   }
 
   deleteRoom = e => {
@@ -78,7 +79,15 @@ class HostView extends React.Component {
       this.setState({ currentRound: nextRound });
     }
     if (nextRound === "results") this.setState({ currentRound: nextRound });
-    if (nextRound === "/") this.props.history.push("/");
+    if (nextRound === "/") {
+      this.props.purgeAll();
+      this.setState({
+        questions: [],
+        rankings: [],
+        category: -1
+      });
+      this.props.history.push("/");
+    }
   };
 
   roundChooser = () => {
@@ -120,5 +129,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { updateQuestions }
+  { updateQuestions, purgeAll }
 )(HostView);

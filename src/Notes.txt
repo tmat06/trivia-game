@@ -1,6 +1,5 @@
 Todo:
 session token
-play again
 redux persist.
 
 Complete:
@@ -10,7 +9,7 @@ style results page
 rank shows on player side
 show which questions they got correct in client results page
 regex questions and answers
-
+play again
 
 RegEx:
 &quot; === "
@@ -21,6 +20,8 @@ RegEx:
 &uuml; === u with 2 dots
 ü
 &amp === &
+&ograve; === ò 
+&micro; === μ
 
 RegEx
 Socket

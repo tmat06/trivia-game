@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import io from "socket.io-client";
 import Button from "@material-ui/core/Button";
 import Drawer from "@material-ui/core/Drawer";
+import { purgeAll } from "./../../ducks/reducer";
 
 const socket = io.connect(
   "http://localhost:3006/",
@@ -26,12 +27,17 @@ class PlayerResults extends React.Component {
       });
     });
     socket.on("play-again", data => {
+      this.props.purgeAll();
       this.props.history.push("/");
     });
   }
 
   componentDidMount() {
     socket.emit("join-room", { room: this.props.room });
+  }
+
+  componentWillUnmount() {
+    socket.emit("leave-room", { room: this.props.room });
   }
 
   render() {
@@ -62,7 +68,6 @@ class PlayerResults extends React.Component {
               }}
             >
               {this.props.questions.map((val, i) => {
-                console.log("val", val);
                 let color = this.props.points[i] ? "green" : "red";
                 return (
                   <div
@@ -117,4 +122,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(PlayerResults);
+export default connect(
+  mapStateToProps,
+  { purgeAll }
+)(PlayerResults);

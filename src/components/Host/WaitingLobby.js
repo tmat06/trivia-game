@@ -34,6 +34,7 @@ class WaitingLobby extends React.Component {
       tracker: 0
     };
     socket.on("joining-room", player => {
+      console.log("joined", player);
       let tempPlayerList = [...this.state.playerList];
       if (this.state.tracker < 8) {
         tempPlayerList[this.state.tracker] = player;
@@ -56,7 +57,7 @@ class WaitingLobby extends React.Component {
   }
 
   componentWillUnmount() {
-    socket.disconnect();
+    // socket.disconnect();
   }
 
   render() {

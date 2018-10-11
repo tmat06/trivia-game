@@ -29,7 +29,7 @@ class Results extends React.Component {
     socket.emit("connect-room", { room: this.props.room });
     setTimeout(() => {
       this.setState({ introduction: false, showResults: true });
-    }, 3000);
+    }, 2000);
   }
 
   handlePlayAgain() {
@@ -102,7 +102,6 @@ class Results extends React.Component {
                       }}
                     >
                       {this.props.questions.map((val, i) => {
-                        console.log("val", val);
                         return (
                           <div
                             key={i}

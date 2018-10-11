@@ -37,7 +37,6 @@ app.get("/get-questions/:category", (req, res) => {
     )
     .then(response => {
       //use RegEx here for questions and answers
-      console.log(response.data.results);
       response.data.results.map((val, i) => {
         val.question = val.question.replace(/&#039;/gi, "'");
         val.question = val.question.replace(/&quot;/gi, '"');
@@ -46,6 +45,8 @@ app.get("/get-questions/:category", (req, res) => {
         val.question = val.question.replace(/&ldquo;/gi, "'");
         val.question = val.question.replace(/&rdquo;/gi, "'");
         val.question = val.question.replace(/&amp;/gi, "&");
+        val.question = val.question.replace(/&ograve;/gi, "ò");
+        val.question = val.question.replace(/&micro;/gi, "μ");
 
         val.correct_answer = val.correct_answer.replace(/&#039;/gi, "'");
         val.correct_answer = val.correct_answer.replace(/&quot;/gi, '"');
@@ -53,10 +54,11 @@ app.get("/get-questions/:category", (req, res) => {
         val.correct_answer = val.correct_answer.replace(/&eacute;/gi, "é");
         val.correct_answer = val.correct_answer.replace(/&ldquo;/gi, "'");
         val.correct_answer = val.correct_answer.replace(/&rdquo;/gi, "'");
-        val.question = val.question.replace(/&amp;/gi, "&");
+        val.correct_answer = val.correct_answer.replace(/&amp;/gi, "&");
+        val.correct_answer = val.correct_answer.replace(/&ograve;/gi, "ò");
+        val.correct_answer = val.correct_answer.replace(/&micro;/gi, "μ");
 
         val.incorrect_answers = val.incorrect_answers.map((val, i) => {
-          console.log("val", val);
           val = val.replace(/&#039;/gi, "'");
           val = val.replace(/&quot;/gi, '"');
           val = val.replace(/&uuml;/gi, "ü");
@@ -64,6 +66,8 @@ app.get("/get-questions/:category", (req, res) => {
           val = val.replace(/&ldquo;/gi, "'");
           val = val.replace(/&rdquo;/gi, "'");
           val = val.replace(/&amp;/gi, "&");
+          val = val.replace(/&ograve;/gi, "ò");
+          val = val.replace(/&micro;/gi, "μ");
 
           return val;
         });
@@ -137,6 +141,10 @@ io.on("connection", socket => {
 
   socket.on("again-play", data => {
     io.sockets.in(data.room).emit("play-again", data);
+  });
+
+  socket.on("leave-room", data => {
+    socket.leave(data.room);
   });
 
   socket.on("disconnect", () => {

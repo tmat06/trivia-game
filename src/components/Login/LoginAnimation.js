@@ -31,7 +31,7 @@ class LoginAnimation extends Component {
   }
 
   componentWillUnmount() {
-    socket.disconnect();
+    // socket.disconnect();
   }
 
   //callback functions
@@ -75,7 +75,7 @@ class LoginAnimation extends Component {
       room: this.state.room,
       avatar
     };
-
+    console.log("should be emitting a join-room here", character);
     socket.emit("join-room", character);
     this.props.updateCharacter(character);
     this.props.history.push("/WaitingView");

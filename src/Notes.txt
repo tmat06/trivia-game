@@ -1,6 +1,8 @@
 Todo:
 session token
 redux persist.
+resolve ties
+Style playerResults & questions
 
 Complete:
 Category Selector

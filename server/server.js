@@ -139,10 +139,6 @@ io.on("connection", socket => {
     io.sockets.in(data.room).emit("player-rankings", data);
   });
 
-  socket.on("again-play", data => {
-    io.sockets.in(data.room).emit("play-again", data);
-  });
-
   socket.on("leave-room", data => {
     socket.leave(data.room);
   });

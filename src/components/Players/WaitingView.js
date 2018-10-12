@@ -47,7 +47,7 @@ class WaitingView extends React.Component {
         >
           {this.props.character.name}
         </h1>
-        <img src={avatar} alt="player avatar" style={{ width: "100%" }} />
+        <img src={avatar} alt="player avatar" id="avatar-img" />
         <h3
           style={{
             color: "#333",

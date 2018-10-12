@@ -204,22 +204,27 @@ class Round1Questions extends React.Component {
                     {this.state.canAnswer ? (
                       this.state.answers.map((val, i) => {
                         return (
-                          <Button
-                            key={i}
-                            style={{ margin: "10 0" }}
-                            variant="contained"
-                            size="large"
-                            fullWidth={true}
-                            onClick={() =>
-                              this.checkAnswer(val, this.state.tracker)
-                            }
-                          >
-                            {val}
-                          </Button>
+                          <div style={{ marginTop: "15px" }}>
+                            <Button
+                              key={i}
+                              style={{ margin: "15 0" }}
+                              variant="contained"
+                              size="large"
+                              fullWidth={true}
+                              onClick={() =>
+                                this.checkAnswer(val, this.state.tracker)
+                              }
+                            >
+                              {val}
+                            </Button>
+                          </div>
                         );
                       })
                     ) : (
-                      <div className="question-timer">
+                      <div
+                        className="question-timer"
+                        style={{ marginTop: "15px" }}
+                      >
                         {this.state.chosenAnswer}
                       </div>
                     )}
@@ -245,17 +250,19 @@ class Round1Questions extends React.Component {
                     {this.state.canAnswer ? (
                       this.state.answers.map((val, i) => {
                         return (
-                          <Button
-                            key={i}
-                            variant="contained"
-                            size="large"
-                            fullWidth={true}
-                            onClick={() =>
-                              this.checkAnswer(val, this.state.tracker)
-                            }
-                          >
-                            {val}
-                          </Button>
+                          <div style={{ marginTop: "15px" }}>
+                            <Button
+                              key={i}
+                              variant="contained"
+                              size="large"
+                              fullWidth={true}
+                              onClick={() =>
+                                this.checkAnswer(val, this.state.tracker)
+                              }
+                            >
+                              {val}
+                            </Button>
+                          </div>
                         );
                       })
                     ) : (

@@ -142,7 +142,14 @@ class Round1 extends React.Component {
                 position: "relative"
               }}
             >
-              <div style={{ position: "fixed", top: "42%", left: "42%" }}>
+              <div
+                style={{
+                  position: "fixed",
+                  top: "40%",
+                  left: "50%",
+                  transform: "translateX(-50%)"
+                }}
+              >
                 <div
                   className="question-timer"
                   style={{

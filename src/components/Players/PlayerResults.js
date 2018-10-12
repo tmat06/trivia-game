@@ -26,10 +26,11 @@ class PlayerResults extends React.Component {
         if (val.name === this.props.name) this.setState({ rank: ++i });
       });
     });
-    socket.on("play-again", data => {
-      this.props.purgeAll();
-      this.props.history.push("/");
-    });
+  }
+
+  playAgain() {
+    this.props.purgeAll();
+    this.props.history.push("/");
   }
 
   componentDidMount() {
@@ -48,6 +49,7 @@ class PlayerResults extends React.Component {
         <Button onClick={() => this.setState({ questions: true })}>
           Questions
         </Button>
+        <Button onClick={() => this.playAgain()}>Play Again</Button>
         <Drawer
           anchor="bottom"
           open={this.state.questions}
@@ -58,13 +60,23 @@ class PlayerResults extends React.Component {
             role="button"
             onClick={() => this.setState({ questions: false })}
             onKeyDown={() => this.setState({ questions: false })}
+            style={{
+              height: "96vh",
+              width: "100%",
+              backgroundColor: "#EEE",
+              overflow: "auto"
+            }}
           >
             <div
               style={{
-                height: "96vh",
+                height: "20%",
                 width: "100%",
                 backgroundColor: "#EEE",
-                overflow: "auto"
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-around",
+                alignItems: "flex-start",
+                boxShadow: "1px 1px 1px #333"
               }}
             >
               {this.props.questions.map((val, i) => {
@@ -73,13 +85,9 @@ class PlayerResults extends React.Component {
                   <div
                     key={i}
                     style={{
-                      height: "33%",
-                      width: "100%",
-                      margin: "5 0",
-                      boxShadow: "2px 2px 2px #333",
                       display: "flex",
                       flexDirection: "column",
-                      alignItems: "center",
+                      alignItems: "flex-start",
                       justifyContent: "space-around",
                       backgroundColor: "#D3D3D3"
                     }}

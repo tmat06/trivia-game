@@ -58,6 +58,7 @@ class WaitingLobby extends React.Component {
 
   componentWillUnmount() {
     // socket.disconnect();
+    // socket.emit("leave-room", { room: this.props.room });
   }
 
   render() {
@@ -75,9 +76,9 @@ class WaitingLobby extends React.Component {
                 <h1>Room Name:</h1>
                 <div>{this.props.room}</div>
               </div>
-              <div id="waiting-lobby-name">Category</div>
+              <div id="waiting-lobby-name">Category:</div>
               <Select
-                style={{ width: "600px" }}
+                style={{ width: "500px", fontSize: "25px", textAlign: "left" }}
                 open={this.state.open}
                 onClose={() => this.setState({ open: false })}
                 onOpen={() => this.setState({ open: true })}

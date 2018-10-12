@@ -34,7 +34,6 @@ class Results extends React.Component {
 
   handlePlayAgain() {
     this.props.playAgainSetUp();
-    socket.emit("again-play", { room: this.props.room });
     this.props.moveRound("/");
   }
 

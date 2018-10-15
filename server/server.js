@@ -47,6 +47,8 @@ app.get("/get-questions/:category", (req, res) => {
         val.question = val.question.replace(/&amp;/gi, "&");
         val.question = val.question.replace(/&ograve;/gi, "ò");
         val.question = val.question.replace(/&micro;/gi, "μ");
+        val.question = val.question.replace(/&scaron;/gi, "š");
+        val.question = val.question.replace(/&rsquo;/gi, "'");
 
         val.correct_answer = val.correct_answer.replace(/&#039;/gi, "'");
         val.correct_answer = val.correct_answer.replace(/&quot;/gi, '"');
@@ -57,6 +59,8 @@ app.get("/get-questions/:category", (req, res) => {
         val.correct_answer = val.correct_answer.replace(/&amp;/gi, "&");
         val.correct_answer = val.correct_answer.replace(/&ograve;/gi, "ò");
         val.correct_answer = val.correct_answer.replace(/&micro;/gi, "μ");
+        val.correct_answer = val.correct_answer.replace(/&scaron;/gi, "š");
+        val.correct_answer = val.correct_answer.replace(/&rsquo;/gi, "'");
 
         val.incorrect_answers = val.incorrect_answers.map((val, i) => {
           val = val.replace(/&#039;/gi, "'");
@@ -68,6 +72,8 @@ app.get("/get-questions/:category", (req, res) => {
           val = val.replace(/&amp;/gi, "&");
           val = val.replace(/&ograve;/gi, "ò");
           val = val.replace(/&micro;/gi, "μ");
+          val = val.replace(/&scaron;/gi, "š");
+          val = val.replace(/&rsquo;/gi, "'");
 
           return val;
         });

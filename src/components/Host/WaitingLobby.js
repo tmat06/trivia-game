@@ -112,6 +112,7 @@ class WaitingLobby extends React.Component {
                 <MenuItem value={32}>Cartoon and Animations</MenuItem>
               </Select>
               <Button
+                style={{ marginTop: "10px" }}
                 variant="contained"
                 color="primary"
                 onClick={() => this.props.moveRound("round1")}

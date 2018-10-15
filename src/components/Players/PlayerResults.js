@@ -60,55 +60,60 @@ class PlayerResults extends React.Component {
             role="button"
             onClick={() => this.setState({ questions: false })}
             onKeyDown={() => this.setState({ questions: false })}
-            style={{
-              height: "96vh",
-              width: "100%",
-              backgroundColor: "#EEE",
-              overflow: "auto"
-            }}
+            style={{ height: "auto" }}
           >
             <div
               style={{
-                height: "20%",
                 width: "100%",
-                backgroundColor: "#EEE",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-around",
-                alignItems: "flex-start",
-                boxShadow: "1px 1px 1px #333"
+                alignItems: "center",
+                margin: "15px 0"
               }}
             >
               {this.props.questions.map((val, i) => {
-                let color = this.props.points[i] ? "green" : "red";
+                let color = this.props.points[i]
+                  ? "#e2ffe2"
+                  : "rgb(250, 193, 193)";
                 return (
                   <div
                     key={i}
                     style={{
+                      fontFamily: "Roboto, sans-serif",
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "flex-start",
                       justifyContent: "space-around",
-                      backgroundColor: "#D3D3D3"
+                      backgroundColor: "#D3D3D3",
+                      width: "100%",
+                      boxShadow: "1px 1px 1px #333",
+                      margin: "5px 0",
+                      padding: "5px"
                     }}
                   >
                     <div
+                      id="result-questions-size"
                       style={{
-                        fontSize: "30px",
-                        fontColor: "#333",
-                        color: color
+                        color: "#556d75",
+                        backgroundColor: color,
+                        width: "100%",
+                        fontWeight: "bold",
+                        marginBottom: "2px"
                       }}
                     >
-                      Question: {val.question}
+                      {i + 1}. Question: {val.question}
                     </div>
                     <div
                       style={{
+                        backgroundColor: color,
                         fontSize: "25px",
-                        fontColor: "#333",
-                        color: color
+                        color: "#66aae7",
+                        textShadow: "1px 1px 1px  #333",
+                        width: "100%"
                       }}
                     >
-                      Answer: {val.correct_answer}
+                      Correct Answer: {val.correct_answer}
                     </div>
                   </div>
                 );

@@ -36,10 +36,10 @@ app.get("/room-check/:room", (req, res) => {
     console.log("response in server", response);
     if (response[0]) {
       //indicating that room is joinable
-      res.status(200).send("true");
+      res.status(200).send("roomFound");
     } else {
       //indicating that room has not been made yet
-      res.sendStatus(200);
+      res.status(200).send("noRoom");
     }
   });
 });

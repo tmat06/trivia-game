@@ -80,13 +80,14 @@ class LoginAnimation extends Component {
       avatar
     };
     axios.get(`/room-check/${this.state.roomJoin}`).then(response => {
+      console.log("response", response);
       if (response.data === "true") {
         this.props.joinRoom(this.state.room);
         socket.emit("join-room", character);
         this.props.updateCharacter(character);
         this.props.history.push("/WaitingView");
       } else {
-        alert("Room Not Created");
+        alert("No Rooms Found with that Name");
       }
     });
   }

@@ -33,6 +33,7 @@ app.post("/create-room", (req, res) => {
 app.get("/room-check/:room", (req, res) => {
   let db = app.get("db");
   db.check_rooms(req.params.room).then(response => {
+    console.log("response in server", response);
     if (response[0]) {
       //indicating that room is joinable
       res.status(200).send("true");

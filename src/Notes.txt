@@ -2,6 +2,8 @@ Todo:
 session token
 redux persist.
 resolve ties
+mobile host
+capitalize rooms
 
 Complete:
 Category Selector

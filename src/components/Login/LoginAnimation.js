@@ -7,6 +7,7 @@ import io from "socket.io-client";
 import { joinRoom, updateCharacter } from "./../../ducks/reducer";
 import { connect } from "react-redux";
 import axios from "axios";
+import _ from "lodash";
 
 const socket = io.connect();
 
@@ -20,7 +21,8 @@ class LoginAnimation extends Component {
       wing: true,
       name: "",
       room: "",
-      roomCreation: ""
+      roomCreation: "",
+      roomJoin: ""
     };
     this.roomChange = this.roomChange.bind(this);
     this.triggerAnimation = this.triggerAnimation.bind(this);
@@ -48,6 +50,9 @@ class LoginAnimation extends Component {
   }
 
   updateState(val, stateKey) {
+    if (stateKey === "roomJoin" || stateKey === "roomCreation") {
+      val = _.toUpper(val);
+    }
     if (val.length < 20) this.setState({ [stateKey]: val });
   }
 
@@ -106,7 +111,7 @@ class LoginAnimation extends Component {
                 updateState: this.updateState,
                 hostRoomClick: this.hostRoomClick
               }}
-              room={this.state.roomCreation}
+              roomCreation={this.state.roomCreation}
             />
           );
         default:
@@ -120,7 +125,7 @@ class LoginAnimation extends Component {
                 joinRoomClick: this.joinRoomClick
               }}
               name={this.state.name}
-              room={this.state.room}
+              roomJoin={this.state.roomJoin}
             />
           );
       }

@@ -2,7 +2,6 @@ Todo:
 session token
 redux persist.
 resolve ties
-Style playerResults & questions
 
 Complete:
 Category Selector
@@ -12,6 +11,8 @@ rank shows on player side
 show which questions they got correct in client results page
 regex questions and answers
 play again
+Style playerResults & questions
+
 
 RegEx:
 &quot; === "
@@ -24,6 +25,7 @@ RegEx:
 &amp === &
 &ograve; === ò 
 &micro; === μ
+https://www.ou.edu/research/electron/internet/special.shtml
 
 RegEx
 Socket

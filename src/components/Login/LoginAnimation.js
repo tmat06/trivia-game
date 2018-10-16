@@ -79,8 +79,8 @@ class LoginAnimation extends Component {
       room: this.state.room,
       avatar
     };
-    axios.get(`/room-check/${this.state.room}`).then(response => {
-      if (response.data) {
+    axios.get(`/room-check/${this.state.roomJoin}`).then(response => {
+      if (response.data === "true") {
         this.props.joinRoom(this.state.room);
         socket.emit("join-room", character);
         this.props.updateCharacter(character);

@@ -78,7 +78,7 @@ class WaitingLobby extends React.Component {
               </div>
               <div id="waiting-lobby-name">Category:</div>
               <Select
-                style={{ width: "500px", fontSize: "25px", textAlign: "left" }}
+                className="category-selector"
                 open={this.state.open}
                 onClose={() => this.setState({ open: false })}
                 onOpen={() => this.setState({ open: true })}

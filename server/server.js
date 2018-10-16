@@ -11,6 +11,8 @@ const app = express();
 
 app.use(bodyParser.json());
 
+app.use(express.static(`${__dirname}/../build`));
+
 massive(CONNECTION_PATH).then(massiveInstance => {
   app.set("db", massiveInstance);
 });
@@ -76,6 +78,7 @@ app.get("/get-questions/:category", (req, res) => {
         val.question = val.question.replace(/&#131;/gi, "ƒ");
         val.question = val.question.replace(/&ouml;/gi, "ö");
         val.question = val.question.replace(/&shy;/gi, "");
+        val.question = val.question.replace(/&oacute;/gi, "ó");
 
         val.correct_answer = val.correct_answer.replace(/&#039;/gi, "'");
         val.correct_answer = val.correct_answer.replace(/&quot;/gi, '"');
@@ -115,6 +118,7 @@ app.get("/get-questions/:category", (req, res) => {
         val.correct_answer = val.correct_answer.replace(/&#131;/gi, "ƒ");
         val.correct_answer = val.correct_answer.replace(/&ouml;/gi, "ö");
         val.correct_answer = val.correct_answer.replace(/&shy;/gi, "");
+        val.correct_answer = val.correct_answer.replace(/&oacute;/gi, "ó");
 
         val.incorrect_answers = val.incorrect_answers.map((val, i) => {
           val = val.replace(/&#039;/gi, "'");
@@ -155,6 +159,7 @@ app.get("/get-questions/:category", (req, res) => {
           val = val.replace(/&#131;/gi, "ƒ");
           val = val.replace(/&ouml;/gi, "ö");
           val = val.replace(/&shy;/gi, "");
+          val = val.replace(/&oacute;/gi, "ó");
 
           return val;
         });

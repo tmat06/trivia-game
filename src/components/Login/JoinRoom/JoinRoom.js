@@ -16,9 +16,10 @@ export default function JoinRoom(props) {
               onBlur={() => props.fn.triggerAnimation("focusTrigger")}
             />
             <input
+              value={props.roomJoin}
               className="input"
               placeholder="Room Name"
-              onChange={e => props.fn.updateState(e.target.value, "room")}
+              onChange={e => props.fn.updateState(e.target.value, "roomJoin")}
               onFocus={() => props.fn.animateInput("roomTrigger")}
               onBlur={() => props.fn.triggerAnimation("roomTrigger")}
             />
@@ -26,7 +27,7 @@ export default function JoinRoom(props) {
             <Button
               variant="contained"
               color="primary"
-              disabled={props.name && props.room ? false : true}
+              disabled={props.name && props.roomJoin ? false : true}
               onClick={() => props.fn.joinRoomClick()}
             >
               Join

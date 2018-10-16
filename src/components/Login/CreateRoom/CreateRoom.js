@@ -9,6 +9,7 @@ export default function CreateRoom(props) {
         return (
           <div style={{ opacity: mot.opacity }}>
             <input
+              value={props.roomCreation}
               className="input"
               placeholder="Room Name"
               onChange={e =>
@@ -21,7 +22,7 @@ export default function CreateRoom(props) {
             <Button
               variant="contained"
               color="primary"
-              disabled={props.room ? false : true}
+              disabled={props.roomCreation ? false : true}
               onClick={() => props.fn.hostRoomClick()}
             >
               Host Room

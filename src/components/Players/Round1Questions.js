@@ -6,15 +6,12 @@ import Button from "@material-ui/core/Button";
 import _ from "lodash";
 import { updatePoints } from "./../../ducks/reducer";
 
-const socket = io.connect(
-  "http://localhost:3006/",
-  {
-    reconnection: true,
-    reconnectionDelay: 1000,
-    reconnectionDelayMax: 5000,
-    reconnectionAttempts: 99999
-  }
-);
+const socket = io.connect({
+  reconnection: true,
+  reconnectionDelay: 1000,
+  reconnectionDelayMax: 5000,
+  reconnectionAttempts: 99999
+});
 
 class Round1Questions extends React.Component {
   constructor() {
@@ -98,8 +95,11 @@ class Round1Questions extends React.Component {
     let tempPoints = [...this.state.points];
     if (answer === this.state.correctAnswer) {
       tempPoints[tracker] = true;
+      //Added to get rid of React Warnings
+      let points = this.state.currentPoints + 1;
+      ///////////////////////////////////////////
       this.setState({
-        currentPoints: ++this.state.currentPoints,
+        currentPoints: points,
         points: [...tempPoints],
         canAnswer: false,
         chosenAnswer: answer

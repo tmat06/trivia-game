@@ -5,15 +5,12 @@ import { connect } from "react-redux";
 import { updateQuestions } from "./../../ducks/reducer";
 import _ from "lodash";
 
-const socket = io.connect(
-  "http://localhost:3006/",
-  {
-    reconnection: true,
-    reconnectionDelay: 1000,
-    reconnectionDelayMax: 5000,
-    reconnectionAttempts: 99999
-  }
-);
+const socket = io.connect({
+  reconnection: true,
+  reconnectionDelay: 1000,
+  reconnectionDelayMax: 5000,
+  reconnectionAttempts: 99999
+});
 
 class Round1 extends React.Component {
   constructor() {

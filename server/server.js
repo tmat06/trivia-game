@@ -78,6 +78,11 @@ app.get("/get-questions/:category", (req, res) => {
         val.question = val.question.replace(/&#131;/gi, "ƒ");
         val.question = val.question.replace(/&ouml;/gi, "ö");
         val.question = val.question.replace(/&shy;/gi, "");
+        val.question = val.question.replace(/&minus;/gi, "-");
+        val.question = val.question.replace(/&plus;/gi, "+");
+        val.question = val.question.replace(/&times;/gi, "*");
+        val.question = val.question.replace(/&divide;/gi, "÷");
+        val.question = val.question.replace(/&equals;/gi, "=");
 
         val.correct_answer = val.correct_answer.replace(/&#039;/gi, "'");
         val.correct_answer = val.correct_answer.replace(/&quot;/gi, '"');
@@ -117,6 +122,11 @@ app.get("/get-questions/:category", (req, res) => {
         val.correct_answer = val.correct_answer.replace(/&#131;/gi, "ƒ");
         val.correct_answer = val.correct_answer.replace(/&ouml;/gi, "ö");
         val.correct_answer = val.correct_answer.replace(/&shy;/gi, "");
+        val.correct_answer = val.correct_answer.replace(/&minus;/gi, "-");
+        val.correct_answer = val.correct_answer.replace(/&plus;/gi, "+");
+        val.correct_answer = val.correct_answer.replace(/&times;/gi, "*");
+        val.correct_answer = val.correct_answer.replace(/&divide;/gi, "÷");
+        val.correct_answer = val.correct_answer.replace(/&equals;/gi, "=");
 
         val.incorrect_answers = val.incorrect_answers.map((val, i) => {
           val = val.replace(/&#039;/gi, "'");
@@ -157,6 +167,11 @@ app.get("/get-questions/:category", (req, res) => {
           val = val.replace(/&#131;/gi, "ƒ");
           val = val.replace(/&ouml;/gi, "ö");
           val = val.replace(/&shy;/gi, "");
+          val = val.replace(/&minus;/gi, "-");
+          val = val.replace(/&plus;/gi, "+");
+          val = val.replace(/&times;/gi, "*");
+          val = val.replace(/&divide;/gi, "÷");
+          val = val.replace(/&equals;/gi, "=");
 
           return val;
         });

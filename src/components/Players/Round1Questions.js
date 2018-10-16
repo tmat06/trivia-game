@@ -95,8 +95,11 @@ class Round1Questions extends React.Component {
     let tempPoints = [...this.state.points];
     if (answer === this.state.correctAnswer) {
       tempPoints[tracker] = true;
+      //Added to get rid of React Warnings
+      let points = this.state.currentPoints + 1;
+      ///////////////////////////////////////////
       this.setState({
-        currentPoints: ++this.state.currentPoints,
+        currentPoints: points,
         points: [...tempPoints],
         canAnswer: false,
         chosenAnswer: answer

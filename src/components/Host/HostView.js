@@ -35,7 +35,9 @@ class HostView extends React.Component {
         return a.amtPoints < b.amtPoints;
       });
       this.setState({ rankings: [...tempRanks] });
-      socket.emit("rankings", { room: this.props.room, rankings: tempRanks });
+      setTimeout(() => {
+        socket.emit("rankings", { room: this.props.room, rankings: tempRanks });
+      }, 2000);
     });
 
     socket.on("questions", questions => {

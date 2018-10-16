@@ -22,7 +22,8 @@ class PlayerResults extends React.Component {
     };
     socket.on("player-rankings", data => {
       data.rankings.forEach((val, i) => {
-        if (val.name === this.props.name) this.setState({ rank: ++i });
+        let rank = i + 1;
+        if (val.name === this.props.name) this.setState({ rank });
       });
     });
   }

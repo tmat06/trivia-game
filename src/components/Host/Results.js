@@ -91,13 +91,16 @@ class Results extends React.Component {
                     role="button"
                     onClick={() => this.setState({ questionDisplay: false })}
                     onKeyDown={() => this.setState({ questionDisplay: false })}
+                    style={{ height: "auto" }}
                   >
                     <div
                       style={{
-                        height: "96vh",
                         width: "100%",
-                        backgroundColor: "#EEE",
-                        overflow: "auto"
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-around",
+                        alignItems: "center",
+                        margin: "15px 0"
                       }}
                     >
                       {this.props.questions.map((val, i) => {
@@ -105,24 +108,36 @@ class Results extends React.Component {
                           <div
                             key={i}
                             style={{
-                              height: "33%",
-                              width: "100%",
-                              margin: "10 0",
-                              boxShadow: "2px 2px 2px #333",
+                              alignItems: "flex-start",
+                              backgroundColor: "#D3D3D3",
+                              boxShadow: "1px 1px 1px #333",
                               display: "flex",
                               flexDirection: "column",
-                              alignItems: "center",
+                              fontFamily: "Roboto, sans-serif",
                               justifyContent: "space-around",
-                              backgroundColor: "#D3D3D3"
+                              margin: "5px 0",
+                              padding: "5px",
+                              width: "100%"
                             }}
                           >
                             <div
-                              style={{ fontSize: "40px", fontColor: "#333" }}
+                              id="result-questions-size"
+                              style={{
+                                color: "#556d75",
+                                width: "100%",
+                                fontWeight: "bold",
+                                marginBottom: "2px"
+                              }}
                             >
-                              Question: {val.question}
+                              {i + 1}. Question: {val.question}
                             </div>
                             <div
-                              style={{ fontSize: "25px", fontColor: "#333" }}
+                              style={{
+                                fontSize: "25px",
+                                color: "#757575",
+                                textShadow: "1px 1px 1px  #333",
+                                width: "100%"
+                              }}
                             >
                               Answer: {val.correct_answer}
                             </div>

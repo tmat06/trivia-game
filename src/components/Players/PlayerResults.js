@@ -6,15 +6,12 @@ import Drawer from "@material-ui/core/Drawer";
 import { purgeAll } from "./../../ducks/reducer";
 import { Motion, spring } from "react-motion";
 
-const socket = io.connect(
-  "http://localhost:3006/",
-  {
-    reconnection: true,
-    reconnectionDelay: 1000,
-    reconnectionDelayMax: 5000,
-    reconnectionAttempts: 99999
-  }
-);
+const socket = io.connect({
+  reconnection: true,
+  reconnectionDelay: 1000,
+  reconnectionDelayMax: 5000,
+  reconnectionAttempts: 99999
+});
 
 class PlayerResults extends React.Component {
   constructor() {

@@ -6,15 +6,12 @@ import Button from "@material-ui/core/Button";
 import _ from "lodash";
 import { updatePoints } from "./../../ducks/reducer";
 
-const socket = io.connect(
-  "http://localhost:3006/",
-  {
-    reconnection: true,
-    reconnectionDelay: 1000,
-    reconnectionDelayMax: 5000,
-    reconnectionAttempts: 99999
-  }
-);
+const socket = io.connect({
+  reconnection: true,
+  reconnectionDelay: 1000,
+  reconnectionDelayMax: 5000,
+  reconnectionAttempts: 99999
+});
 
 class Round1Questions extends React.Component {
   constructor() {

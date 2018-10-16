@@ -72,7 +72,6 @@ class LoginAnimation extends Component {
   }
 
   joinRoomClick() {
-    this.props.joinRoom(this.state.room);
     //avatar for male can be 1 - 129 or female 1 - 114
     let avatar = Math.floor(Math.random() * 129);
     const character = {
@@ -80,10 +79,16 @@ class LoginAnimation extends Component {
       room: this.state.room,
       avatar
     };
-    console.log("should be emitting a join-room here", character);
-    socket.emit("join-room", character);
-    this.props.updateCharacter(character);
-    this.props.history.push("/WaitingView");
+    axios.get(`/room-check/${this.state.room}`).then(response => {
+      if (response.data) {
+        this.props.joinRoom(this.state.room);
+        socket.emit("join-room", character);
+        this.props.updateCharacter(character);
+        this.props.history.push("/WaitingView");
+      } else {
+        alert("Room Not Created");
+      }
+    });
   }
 
   //////////////////////////////////

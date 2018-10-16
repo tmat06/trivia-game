@@ -76,15 +76,12 @@ class LoginAnimation extends Component {
     let avatar = Math.floor(Math.random() * 129);
     const character = {
       name: this.state.name,
-      room: this.state.room,
+      room: this.state.roomJoin,
       avatar
     };
     axios.get(`/room-check/${this.state.roomJoin}`).then(response => {
-      console.log("response", response);
       if (response.data === "roomFound") {
-        console.log("character", character);
-        console.log("this.state.room", this.state.room);
-        this.props.joinRoom(this.state.room);
+        this.props.joinRoom(this.state.roomJoin);
         socket.emit("join-room", character);
         this.props.updateCharacter(character);
         this.props.history.push("/WaitingView");

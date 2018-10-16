@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import axios from "axios";
 import _ from "lodash";
 
-const socket = io.connect("http://localhost:3006");
+const socket = io.connect();
 
 class LoginAnimation extends Component {
   constructor() {

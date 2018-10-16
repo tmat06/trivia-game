@@ -7,15 +7,12 @@ import Results from "./Results";
 import io from "socket.io-client";
 import { updateQuestions, purgeAll } from "./../../ducks/reducer";
 
-const socket = io.connect(
-  "http://localhost:3006/",
-  {
-    reconnection: true,
-    reconnectionDelay: 1000,
-    reconnectionDelayMax: 5000,
-    reconnectionAttempts: 99999
-  }
-);
+const socket = io.connect({
+  reconnection: true,
+  reconnectionDelay: 1000,
+  reconnectionDelayMax: 5000,
+  reconnectionAttempts: 99999
+});
 
 class HostView extends React.Component {
   constructor() {

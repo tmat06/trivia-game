@@ -39,7 +39,7 @@ app.get("/room-check/:room", (req, res) => {
       res.status(200).send("true");
     } else {
       //indicating that room has not been made yet
-      res.status(200).send("false");
+      res.sendStatus(200);
     }
   });
 });
